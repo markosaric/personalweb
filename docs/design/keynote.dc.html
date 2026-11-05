@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Keynote direction</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#60A5FA}a:hover{color:#93C5FD}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: {{t.bg}}; color: {{t.text}}; font-family: Inter, system-ui, sans-serif; transition: background .2s">
+  <header style="max-width: 1160px; margin: 0 auto; padding: 24px 24px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
+    <a href="#top" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; color: {{t.text}}; text-decoration: none">marko<span style="color: {{accent}}">.</span>saric</a>
+    <nav style="display: flex; flex-wrap: wrap; gap: 24px; align-items: center; font-size: 15px">
+      <a href="#talks" style="color: {{t.muted}}; text-decoration: none">Speaking</a>
+      <a href="#about" style="color: {{t.muted}}; text-decoration: none">About</a>
+      <a href="#certs" style="color: {{t.muted}}; text-decoration: none">Certifications</a>
+      <a href="#articles" style="color: {{t.muted}}; text-decoration: none">Articles</a>
+      <a href="#contact" style="color: {{t.muted}}; text-decoration: none">Contact</a>
+      <button type="button" onClick="{{toggle}}" aria-label="Toggle dark mode" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid {{t.line}}; background: {{t.card}}; color: {{t.text}}; cursor: pointer; display: flex; align-items: center; justify-content: center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+      </button>
+    </nav>
+  </header>
+
+  <div style="position: relative; overflow: hidden">
+  <img src="/_blob/ad63537c7b225fbd3853059a070afb2b" alt="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 45%">
+  <div style="position: absolute; inset: 0; background: {{t.scrim}}"></div>
+  <section id="top" style="position: relative; max-width: 1160px; margin: 0 auto; padding: 48px 24px 80px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
+    <div style="flex: 999 1 520px; min-width: 0">
+      <p style="margin: 0 0 16px; font-size: 14px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: {{accent}}">Software Developer · Conference Speaker · Microsoft Certified</p>
+      <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: clamp(48px, 7vw, 88px); line-height: 1; letter-spacing: -.02em">Marko Šarić</h1>
+      <p style="margin: 24px 0 0; font-size: 20px; line-height: 1.5; color: {{t.muted}}; max-width: 560px">Technology enthusiast building solutions and sharing knowledge. Senior Software Engineer at Syskit, speaking about Azure, DevOps, .NET and AI since 2017.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px">
+        <a href="#contact" style="padding: 14px 24px; border-radius: 10px; background: {{accent}}; color: #FFFFFF; text-decoration: none; font-weight: 600">Invite me to speak</a>
+        <a href="https://www.linkedin.com/in/saricmarko/" style="padding: 14px 24px; border-radius: 10px; border: 1px solid {{t.line}}; color: {{t.text}}; text-decoration: none; font-weight: 600">Connect on LinkedIn</a>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 40px; margin-top: 48px">
+        <div><div style="font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700">17</div><div style="font-size: 14px; color: {{t.muted}}">years in software</div></div>
+        <div><div style="font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700">21</div><div style="font-size: 14px; color: {{t.muted}}">sessions delivered</div></div>
+        <div><div style="font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700">15</div><div style="font-size: 14px; color: {{t.muted}}">certifications</div></div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <section id="talks" style="background: {{t.band}}; padding: 80px 24px">
+    <div style="max-width: 1160px; margin: 0 auto">
+      <h2 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-size: 40px">Talks I offer</h2>
+      <p style="margin: 0 0 32px; color: {{t.muted}}; font-size: 17px">Sessions ready for your conference or meetup. Full abstracts on <a href="https://sessionize.com/marko-saric/">Sessionize</a>.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px">
+        <sc-for list="{{offers}}" as="o" hint-placeholder-count="3">
+          <article style="background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+            <span style="font-size: 13px; font-weight: 600; color: {{accent}}">{{o.tag}}</span>
+            <h3 style="margin: 0; font-size: 20px; line-height: 1.3">{{o.title}}</h3>
+            <p style="margin: 0; font-size: 15px; line-height: 1.5; color: {{t.muted}}">{{o.blurb}}</p>
+          </article>
+        </sc-for>
+      </div>
+      <h3 style="margin: 56px 0 16px; font-size: 22px">Past talks</h3>
+      <div style="display: flex; flex-direction: column">
+        <sc-for list="{{past}}" as="p" hint-placeholder-count="5">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 16px 0; border-top: 1px solid {{t.line}}">
+            <span style="width: 56px; font-weight: 600; color: {{t.muted}}">{{p.year}}</span>
+            <span style="flex: 1 1 320px; font-weight: 500">{{p.title}}</span>
+            <span style="color: {{t.muted}}">{{p.event}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; justify-content: center; margin-top: 24px"><button type="button" onClick="{{toggleTalks}}" aria-expanded="{{talksOpen}}" style="min-height: 44px; padding: 12px 22px; border-radius: 10px; border: 1px solid {{t.line}}; background: {{t.card}}; color: {{t.text}}; font: inherit; font-weight: 600; cursor: pointer">{{talksLabel}}</button></div>
+    </div>
+  </section>
+
+  <section id="about" style="max-width: 1160px; margin: 0 auto; padding: 80px 24px; display: flex; flex-wrap: wrap; gap: 48px">
+    <div style="flex: 1 1 260px; max-width: 320px; align-self: flex-start; position: relative; margin-right: 24px">
+    <div style="position: relative; border-radius: 50%; aspect-ratio: 1 / 1; overflow: hidden; border: 1px solid {{t.line}}">
+      <img src="/_blob/91d9b8565c8853b1b47db5621c5dbb25" alt="Portrait of Marko Šarić" style="width: 100%; aspect-ratio: 1 / 1; object-position: 50% 30%; object-fit: cover; display: block">
+      <div style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 70% 75% at 50% 42%, rgba(0,0,0,0) 45%, {{t.vig}} 100%)"></div>
+    </div>
+      <div title="Microsoft Certified Professional since 2014" style="position: absolute; left: 85.4%; top: 85.4%; transform: translate(-50%, -50%); width: 32%; box-sizing: border-box; padding: 8px 10px; background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,.25)"><img src="/_blob/5a64759dd2124100989ccc2b47e4109a" alt="Microsoft Certified Professional" style="width: 100%; display: block; filter: {{logoFilter}}"></div>
+    </div>
+    <div style="flex: 1 1 320px">
+      <h2 style="margin: 0 0 16px; font-family: 'Space Grotesk', sans-serif; font-size: 40px">About me</h2>
+      <p style="margin: 0; font-size: 17px; line-height: 1.6; color: {{t.muted}}">I started as a .NET developer in 2009 and have since led teams, run Scrum, and designed DevOps processes and cloud architecture on Azure. Today I am a Senior Software Engineer at Syskit in Zagreb. Off the keyboard: mountain biking, fitness and guitar.</p>
+    </div>
+    <ol style="flex: 1 1 420px; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px">
+      <sc-for list="{{jobs}}" as="j" hint-placeholder-count="5">
+        <li style="display: flex; gap: 16px; align-items: baseline">
+          <span style="width: 10px; height: 10px; border-radius: 5px; background: {{accent}}; flex: none"></span>
+          <div><div style="font-weight: 600">{{j.role}}</div><sc-if value="{{j.hasPrev}}" hint-placeholder-val="{{ false }}"><div style="font-size: 13px; color: {{t.muted}}; margin-top: 2px; display: flex; gap: 6px; align-items: center"><span aria-label="promoted from" style="color: {{accent}}; font-weight: 700">↑</span>{{j.prev}}</div></sc-if><div style="font-size: 15px; color: {{t.muted}}">{{j.org}} · {{j.years}}</div></div>
+        </li>
+      </sc-for>
+    </ol>
+  </section>
+
+  <section id="certs" style="background: {{t.band}}; padding: 80px 24px">
+    <div style="max-width: 1160px; margin: 0 auto">
+      <h2 style="margin: 0 0 32px; font-family: 'Space Grotesk', sans-serif; font-size: 40px">Certifications</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+        <sc-for list="{{certs}}" as="c" hint-placeholder-count="5">
+          <div style="background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 16px; padding: 24px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 8px">
+            <sc-if value="{{c.hasImg}}" hint-placeholder-val="{{ true }}"><img src="{{c.img}}" alt="{{c.name}} badge" style="width: 96px; height: 96px; object-fit: contain; display: block">
+            <span style="font-weight: 600; line-height: 1.3">{{c.name}}</span>
+            <span style="font-size: 14px; color: {{t.muted}}">{{c.issuer}}</span>
+            </sc-if>
+            <sc-if value="{{c.isLogo}}" hint-placeholder-val="{{ false }}"><img src="{{c.img}}" alt="Microsoft {{c.name}} logo" style="width: 100%; max-width: 220px; height: 128px; object-fit: contain; display: block; filter: {{logoFilter}}"></sc-if>
+            <sc-if value="{{c.noImg}}" hint-placeholder-val="{{ false }}"><span style="width: 96px; height: 96px; border: 2px solid {{t.line}}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; letter-spacing: .04em; color: {{accent}}">{{c.abbr}}</span><span style="margin-top: 10px; font-weight: 600; line-height: 1.3">{{c.name}}</span></sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; justify-content: center; margin-top: 24px"><button type="button" onClick="{{toggleCerts}}" aria-expanded="{{certsOpen}}" style="min-height: 44px; padding: 12px 22px; border-radius: 10px; border: 1px solid {{t.line}}; background: {{t.card}}; color: {{t.text}}; font: inherit; font-weight: 600; cursor: pointer">{{certLabel}}</button></div>
+      <p style="margin: 20px 0 0; font-size: 15px"><a href="https://learn.microsoft.com/en-us/users/kommandant-mark/transcript/vpm4wimo29n83em">Verify on Microsoft Learn</a></p>
+    </div>
+  </section>
+
+  <section id="articles" style="max-width: 1160px; margin: 0 auto; padding: 80px 24px">
+    <h2 style="margin: 0 0 32px; font-family: 'Space Grotesk', sans-serif; font-size: 40px">Latest articles</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px">
+      <sc-for list="{{articles}}" as="a" hint-placeholder-count="3">
+        <article style="border-top: 2px solid {{accent}}; padding-top: 16px">
+          <div style="font-size: 13px; color: {{t.muted}}">{{a.tag}}</div>
+          <h3 style="margin: 8px 0; font-size: 20px">{{a.title}}</h3>
+          <p style="margin: 0; color: {{t.muted}}; font-size: 15px">[SHORT SUMMARY]</p>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <footer id="contact" style="border-top: 1px solid {{t.line}}; padding: 64px 24px">
+    <div style="max-width: 1160px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; align-items: center">
+      <div>
+        <h2 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-size: 32px">Planning an event?</h2>
+        <p style="margin: 0; color: {{t.muted}}">Write to me and I will reply within a few days.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px">
+        <sc-for list="{{socials}}" as="s" hint-placeholder-count="5">
+          <a href="{{s.url}}" style="padding: 12px 18px; border: 1px solid {{t.line}}; border-radius: 10px; color: {{t.text}}; text-decoration: none; font-weight: 500">{{s.name}}</a>
+        </sc-for>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2F6FEB","options":["#2F6FEB","#0EA5A4","#7C3AED","#E0592A"]},"startDark":{"editor":"boolean","default":true},"$preview":{"width":1280,"height":2900}}'>
+class Component extends DCLogic {
+  pickTalks(list) { return (this.state && this.state.showTalks) ? list : list.slice(0, 5); }
+  pickCerts(list) { return (this.state && this.state.showAll) ? list : list.slice(0, 5); }
+  renderVals() {
+    const dark = this.state && this.state.dark !== undefined ? this.state.dark : (this.props.startDark ?? true);
+    const t = dark
+      ? { bg: '#0B1220', band: '#0F1A2E', card: '#14213A', text: '#F1F5F9', muted: '#A3B1C6', line: '#24324D', badge: '#1C2D4F', vig: 'rgba(11,18,32,.85)', scrim: 'linear-gradient(90deg, rgba(11,18,32,.94) 0%, rgba(11,18,32,.86) 55%, rgba(11,18,32,.6) 100%)' }
+      : { bg: '#FFFFFF', band: '#F3F6FB', card: '#FFFFFF', text: '#0F172A', muted: '#475569', line: '#DCE3EE', badge: '#E6EEFD', vig: 'rgba(15,23,42,.55)', scrim: 'linear-gradient(90deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,.88) 55%, rgba(255,255,255,.65) 100%)' };
+    return {
+      t, accent: this.props.accent ?? '#2F6FEB',
+      toggle: () => this.setState({ dark: !dark }),
+      logoFilter: dark ? 'invert(1) hue-rotate(180deg)' : 'none',
+      talksOpen: !!(this.state && this.state.showTalks),
+      talksLabel: (this.state && this.state.showTalks) ? 'Show fewer' : 'Show all 19 past talks',
+      toggleTalks: () => this.setState({ showTalks: !(this.state && this.state.showTalks) }),
+      certsOpen: !!(this.state && this.state.showAll),
+      certLabel: (this.state && this.state.showAll) ? 'Show fewer' : 'Show all 15 certifications',
+      toggleCerts: () => this.setState({ showAll: !(this.state && this.state.showAll) }),
+      offers: [
+        { tag: 'AI · Azure', title: 'From Prompts to Purpose: Architecting Agentic AI in the Azure Cloud', blurb: 'Build goal-driven AI agents that plan, reason and act, using Azure AI Foundry and Microsoft Agent Framework.' },
+        { tag: 'Azure · Data', title: 'Demystifying Azure Cosmos DB', blurb: 'Where Cosmos DB costs really come from, how to keep them under control, and when Azure SQL or Blob Storage is the better choice.' },
+        { tag: 'AI · .NET', title: 'Honey, AI will replace me', blurb: 'A real-world look at GitHub Copilot in a .NET project: what it does to productivity and code quality, and whether AI will really replace us.' }
+      ],
+      past: this.pickTalks([
+        { year: '2026', title: 'From Prompts to Purpose: Architecting Agentic AI in the Azure Cloud', event: 'Weblica 2026' },
+        { year: '2026', title: 'From Prompts to Purpose: Architecting Agentic AI in the Azure Cloud', event: '.debug 2026' },
+        { year: '2026', title: 'Demystifying Azure Cosmos DB', event: 'NetWork 14' },
+        { year: '2024', title: 'Honey, AI will replace me', event: 'Advanced Technology Days 19' },
+        { year: '2024', title: 'Battle of Titans: EF Core vs Dapper', event: 'Weblica 2024' },
+        { year: '2022', title: 'Troubles during migration: On-premise MongoDB on Azure Cosmos DB', event: 'Advanced Technology Days 17' },
+        { year: '2020', title: 'Building The Pipeline', event: 'WinDays 2020' },
+        { year: '2019', title: 'Enforcing Agile Teams with Azure DevOps', event: 'Advanced Technology Days 15' },
+        { year: '2019', title: 'Enforcing Agile Teams with Azure DevOps', event: 'Global Azure Bootcamp 2019' },
+        { year: '2019', title: 'Building Cross-Platform Native Mobile Apps with NativeScript', event: 'NetWork, WinDays and Weblica 2019' },
+        { year: '2019', title: 'Azure DevOps practices in Agrivi', event: 'Algebra' },
+        { year: '2018', title: 'Crazy little thing called Serverless', event: 'Change 2018' },
+        { year: '2018', title: 'Crazy little thing called Serverless', event: 'CrisCon 2018' },
+        { year: '2018', title: 'Azure Beyond Websites', event: 'Weblica 2018' },
+        { year: '2018', title: 'A DevOps Guide for Developers', event: 'WinDays 2018' },
+        { year: '2017', title: 'Azure Beyond Websites', event: 'Advanced Technology Days 13' },
+        { year: '2017', title: 'Continuous Delivery: A Roadmap To Failure', event: 'Weblica 2017' },
+        { year: '2017', title: 'Bite the Apple: EF Core on macOS and SQL Server in container', event: 'WinDays 2017' },
+        { year: '2017', title: 'EF Core on macOS and Azure SQL', event: 'Microsoft Community' }
+      ]),
+      jobs: [
+        { role: 'Senior Software Engineer', org: 'Syskit', years: '2025 – now', hasPrev: false, prev: '' },
+        { role: 'Lead Software Engineer', org: 'GlobalLogic Croatia', years: '2021 – 2025', hasPrev: false, prev: '' },
+        { role: 'Development Team Lead', org: 'Agrivi', years: '2018 – 2021', hasPrev: false, prev: '' },
+        { role: 'Application Development Consultant', org: 'Comminus', years: '2015 – 2018', hasPrev: true, prev: 'Application Development Specialist' },
+        { role: 'Lead Software Engineer / Team Lead', org: 'Microlab', years: '2009 – 2015', hasPrev: true, prev: 'Software Engineer' }
+      ],
+      certs: this.pickCerts([
+        { short: 'SA', name: 'Azure Solutions Architect Expert', issuer: 'Microsoft', img: '/_blob/993c451d655edee90cd3a08bea28b0a2', hasImg: true, isLogo: false, noImg: false },
+        { short: 'DE', name: 'DevOps Engineer Expert', issuer: 'Microsoft', img: '/_blob/53c2a8fefa84e4868a2932d8d5f04cd7', hasImg: true, isLogo: false, noImg: false },
+        { short: 'AD', name: 'Azure Developer Associate', issuer: 'Microsoft', img: '/_blob/36354f0b827c87b7963e5d1bdccb9636', abbr: 'AZ-204', hasImg: true, isLogo: false, noImg: false },
+        { short: 'MS', name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft', img: '/_blob/18d7ca52065068b0bcfa1f4e85ce5a7a', abbr: 'MS-900', hasImg: true, isLogo: false, noImg: false },
+        { short: 'AI', name: 'Azure AI Fundamentals', issuer: 'Microsoft', img: '/_blob/0dbd7f78d9797166fb0407d5bc6539db', hasImg: true, isLogo: false, noImg: false },
+        { short: 'AZ', name: 'Azure Fundamentals', issuer: 'Microsoft', img: '/_blob/94cb1ad0efdb478db0d3f0d55995ef95', hasImg: true, isLogo: false, noImg: false },
+        { short: 'SM', name: 'Professional Scrum Master I', issuer: 'Scrum.org', img: '/_blob/23b5df0879f5c830a74ca511883c747f', hasImg: true, isLogo: false, noImg: false },
+        { name: 'Solutions Expert: Cloud Platform and Infrastructure', issuer: '', img: '/_blob/0e60c156905c7b89a1a7907af98dc259', abbr: 'MCSE', hasImg: false, isLogo: true, noImg: false },
+        { name: 'Solutions Developer: App Builder', issuer: '', img: '/_blob/943dff86fc65cf6692bdefec563e04d9', abbr: 'MCSD', hasImg: false, isLogo: true, noImg: false },
+        { name: 'Solutions Developer: Application Lifecycle Management', issuer: '', img: '/_blob/bef1f774729a5afdc72eca24fc950d3b', abbr: 'MCSD', hasImg: false, isLogo: true, noImg: false },
+        { name: 'Solutions Developer: Web Applications', issuer: '', img: '/_blob/190c5d671d1aad5c8b39d22dc1a9b92e', abbr: 'MCSD', hasImg: false, isLogo: true, noImg: false },
+        { name: 'Solutions Associate: Cloud Platform', issuer: '', img: '/_blob/1857fd41878e9989eaeb04ba423e12ea', abbr: 'MCSA', hasImg: false, isLogo: true, noImg: false },
+        { name: 'Solutions Associate: Web Applications', issuer: '', img: '/_blob/3fa6317c6d3b22fe6366b468b66c037d', abbr: 'MCSA', hasImg: false, isLogo: true, noImg: false },
+        { name: 'Specialist: Programming in HTML5 with JavaScript and CSS3', issuer: '', img: '/_blob/dc1f0a274a205c6a6d872914aee0e7e0', abbr: 'HTML5', hasImg: false, isLogo: true, noImg: false },
+        { name: 'Technology Associate: Software Development Fundamentals', issuer: '', img: '/_blob/5c2b0e212fdb73decff60509d160985b', abbr: 'MTA', hasImg: false, isLogo: true, noImg: false },
+      ]),
+      articles: [
+        { tag: '[TAG]', title: '[ARTICLE TITLE]' }, { tag: '[TAG]', title: '[ARTICLE TITLE]' }, { tag: '[TAG]', title: '[ARTICLE TITLE]' }
+      ],
+      socials: [
+        { name: 'LinkedIn', url: 'https://www.linkedin.com/in/saricmarko/' },
+        { name: 'Sessionize', url: 'https://sessionize.com/marko-saric/' },
+        { name: 'GitHub', url: 'https://github.com/markosaric' },
+        { name: 'Instagram', url: 'https://www.instagram.com/kommandant.mark/' },
+        { name: 'Facebook', url: 'https://www.facebook.com/kommandant.mark' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
