@@ -1,0 +1,53 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  articles: CollectionEntry<'articles'>[];
+}
+
+const { articles } = Astro.props;
+---
+
+<section id="articles" class="section">
+  <div class="container">
+    <h2 class="section-title">Latest articles</h2>
+    <div class="articles">
+      {
+        articles.map((a) => (
+          <article>
+            <div class="tag muted">{a.data.tag}</div>
+            <h3>{a.data.title}</h3>
+            <p class="muted">{a.data.summary}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .articles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  article {
+    border-top: 2px solid var(--accent);
+    padding-top: 16px;
+  }
+
+  .tag {
+    font-size: 13px;
+  }
+
+  h3 {
+    margin: 8px 0;
+    font-size: 20px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 15px;
+  }
+</style>

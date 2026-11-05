@@ -1,0 +1,167 @@
+---
+import { Image } from 'astro:assets';
+import headshot from '../assets/photos/headshot.jpg';
+import mcp from '../assets/certifications/microsoft-certified-professional.png';
+import { profile } from '../data/profile';
+import { jobs } from '../data/jobs';
+---
+
+<section id="about" class="section">
+  <div class="container about">
+    <div class="photo-wrap">
+      <div class="photo">
+        <Image src={headshot} alt={`Portrait of ${profile.name}`} widths={[320, 640]} sizes="320px" />
+        <div class="vignette"></div>
+      </div>
+      <div class="mcp-badge" title="Microsoft Certified Professional since 2014">
+        <Image src={mcp} alt="Microsoft Certified Professional" class="logo-invert" widths={[120, 240]} sizes="104px" />
+      </div>
+    </div>
+
+    <div class="bio">
+      <h2 class="section-title">About me</h2>
+      <p class="muted">{profile.about}</p>
+    </div>
+
+    <ol class="jobs" aria-label="Experience">
+      {
+        jobs.map((j) => (
+          <li>
+            <span class="dot" />
+            <div>
+              <div class="role">{j.role}</div>
+              {j.promotedFrom && (
+                <div class="prev muted">
+                  <span class="arrow" aria-hidden="true">↑</span>
+                  <span class="visually-hidden">Promoted from</span>
+                  {j.promotedFrom}
+                </div>
+              )}
+              <div class="org muted">
+                {j.org} · {j.years}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .about {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+  }
+
+  .photo-wrap {
+    flex: 1 1 260px;
+    max-width: 320px;
+    align-self: flex-start;
+    position: relative;
+    margin-right: 24px;
+  }
+
+  .photo {
+    position: relative;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    display: block;
+  }
+
+  .vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 75% at 50% 42%, rgba(0, 0, 0, 0) 45%, var(--vignette) 100%);
+  }
+
+  /* Sits on the circle's edge at about 4:30. */
+  .mcp-badge {
+    position: absolute;
+    left: 85.4%;
+    top: 85.4%;
+    transform: translate(-50%, -50%);
+    width: 32%;
+    padding: 8px 10px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .mcp-badge img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .bio {
+    flex: 1 1 320px;
+  }
+
+  .bio .section-title {
+    margin-bottom: 16px;
+  }
+
+  .bio p {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .jobs {
+    flex: 1 1 420px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .jobs li {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background: var(--accent);
+    flex: none;
+  }
+
+  .role {
+    font-weight: 600;
+  }
+
+  .prev {
+    font-size: 13px;
+    margin-top: 2px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .arrow {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .org {
+    font-size: 15px;
+  }
+</style>

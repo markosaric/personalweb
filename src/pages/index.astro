@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Talks from '../components/Talks.astro';
+import About from '../components/About.astro';
+import Certifications from '../components/Certifications.astro';
+import Articles from '../components/Articles.astro';
+import Contact from '../components/Contact.astro';
+import { profile } from '../data/profile';
+
+const latestArticles = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+const showArticles = latestArticles.length > 0;
+---
+
+<Base title={`${profile.name} · Software Developer and Conference Speaker`} description={profile.description}>
+  <Header showArticles={showArticles} />
+  <main>
+    <Hero />
+    <Talks />
+    <About />
+    <Certifications />
+    {showArticles && <Articles articles={latestArticles} />}
+  </main>
+  <Contact />
+</Base>
