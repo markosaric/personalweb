@@ -1,0 +1,29 @@
+---
+// A "Show all / Show fewer" button for a list marked with data-collapsible.
+// Items to hide in the collapsed state carry data-extra.
+interface Props {
+  target: string;
+  moreLabel: string;
+}
+
+const { target, moreLabel } = Astro.props;
+---
+
+<div class="show-more">
+  <button type="button" class="button button--card" aria-controls={target} aria-expanded="false" data-more={moreLabel} data-show-more>
+    {moreLabel}
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-show-more]').forEach((button) => {
+    const list = document.getElementById(button.getAttribute('aria-controls') ?? '');
+    if (!list) return;
+    button.addEventListener('click', () => {
+      const open = !list.hasAttribute('data-expanded');
+      list.toggleAttribute('data-expanded', open);
+      button.setAttribute('aria-expanded', String(open));
+      button.textContent = open ? 'Show fewer' : (button.dataset.more ?? 'Show all');
+    });
+  });
+</script>

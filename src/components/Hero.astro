@@ -1,0 +1,125 @@
+---
+import { Image } from 'astro:assets';
+import header from '../assets/photos/header.jpg';
+import { profile, yearsInSoftware } from '../data/profile';
+import { sessionsDelivered } from '../data/talks';
+import { certifications } from '../data/certifications';
+
+const stats = [
+  { value: yearsInSoftware, label: 'years in software' },
+  { value: sessionsDelivered, label: 'sessions delivered' },
+  { value: certifications.length, label: 'certifications' },
+];
+---
+
+<div class="hero">
+  <Image src={header} alt="" aria-hidden="true" class="hero-bg" widths={[800, 1280, 2048]} sizes="100vw" loading="eager" fetchpriority="high" />
+  <div class="hero-scrim"></div>
+  <section id="top" class="hero-inner container">
+    <div class="hero-text">
+      <p class="eyebrow">{profile.headline}</p>
+      <h1>{profile.name}</h1>
+      <p class="tagline">{profile.tagline}</p>
+      <div class="actions">
+        <a href="#contact" class="button button--primary">Invite me to speak</a>
+        <a href={profile.linkedin} class="button">Connect on LinkedIn</a>
+      </div>
+      <dl class="stats">
+        {
+          stats.map((s) => (
+            <div>
+              <dt>{s.label}</dt>
+              <dd>{s.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+</div>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 45%;
+  }
+
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: var(--scrim);
+  }
+
+  .hero-inner {
+    position: relative;
+    padding: 48px 24px 80px;
+  }
+
+  .hero-text {
+    max-width: 720px;
+  }
+
+  .eyebrow {
+    margin: 0 0 16px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(48px, 7vw, 88px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .tagline {
+    margin: 24px 0 0;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: 560px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin: 48px 0 0;
+  }
+
+  .stats div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .stats dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
+  }
+
+  .stats dt {
+    font-size: 14px;
+    color: var(--muted);
+  }
+</style>
