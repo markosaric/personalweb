@@ -1,192 +1,102 @@
-# Deployment: Cloudflare Pages and CI/CD
+# Deployment: Cloudflare Workers with Git integration
 
-How to put the site on Cloudflare Pages and have GitHub Actions check, preview and deploy it. Follow the steps in order; the whole setup takes about 30 minutes, most of it waiting for DNS.
+How the site is hosted and deployed. Cloudflare connects to the GitHub repo and does everything itself: it builds every commit, deploys `main` to production and gives every other branch a preview. There is no CI configuration in the repo apart from [`wrangler.jsonc`](../wrangler.jsonc), and no API tokens or GitHub secrets to manage.
 
 ## What you end up with
 
 | Event | What happens |
 | --- | --- |
-| Pull request opened or updated | GitHub Actions type-checks and builds the site. If the build passes, it uploads a **preview** to Cloudflare and links it on the PR. |
-| Push or merge to `main` | Same build, then a **production** deploy to your domain. |
+| Commit to `main` (including a merged PR) | Cloudflare builds the site and deploys it to production. |
+| Commit to any other branch, or a PR | Cloudflare builds it and uploads a **preview** version with its own URL. A failing build shows as a failed check on the commit and the PR. |
 
-Everything runs on free tiers: Cloudflare Pages (unlimited bandwidth, 500 builds a month, though this setup builds on GitHub so it uses none of them) and GitHub Actions (free for public repos, 2,000 minutes a month for private ones; one run takes about a minute).
+Everything runs on the free plan: static asset requests on Workers are free and unlimited, and Workers Builds includes 3,000 build minutes a month (one build of this site takes about a minute).
 
-## Which way to deploy
+## How the pieces fit
 
-Cloudflare Pages can deploy a site in two ways. This guide uses the second.
+- **Cloudflare Workers** serves the built site. Astro builds plain files into `dist/`, and `wrangler.jsonc` tells Cloudflare to serve that folder as static assets. No server code runs.
+- **Workers Builds** is Cloudflare's Git integration. The **Cloudflare Workers and Pages** GitHub App gives it permission to read the repo and to post build checks back to GitHub.
+- **Wrangler** is Cloudflare's command-line tool. Workers Builds runs it to deploy; you never need to run it yourself.
 
-| | Cloudflare Git integration | GitHub Actions + Direct Upload (recommended) |
-| --- | --- | --- |
-| How it works | Cloudflare watches the repo and builds it on its own servers | GitHub Actions builds the site and uploads `dist/` to Cloudflare |
-| PR checks in GitHub | A status link only; a failing build does not block the PR | A real check that can be made required before merging |
-| Where the build lives | Cloudflare dashboard settings | `.github/workflows/deploy.yml`, versioned with the code |
-| Secrets to manage | None | One API token and the account ID |
+`wrangler.jsonc` in the repo root:
 
-Both build every pull request and every commit to `main`. GitHub Actions wins on the PR check: a broken build shows as a failed check that can block the merge, and the whole pipeline lives in one file in the repo where it is reviewed like any other change.
-
-One thing to know before you start: a Pages project created for Direct Upload **cannot be switched to the Git integration later**. If you ever want that, you create a new Pages project and move the domain to it, which takes a few minutes.
+```jsonc
+{
+  "name": "personalweb",            // must match the Worker name in the dashboard
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",          // Astro's build output
+    "not_found_handling": "404-page" // serves dist/404.html if a page is missing
+  }
+}
+```
 
 ## Before you start
 
 - A Cloudflare account (free): <https://dash.cloudflare.com/sign-up>.
 - Admin access to the `markosaric/personalweb` GitHub repo.
-- The domain, once chosen. You can do steps 1 to 5 without it and add it later in step 6; until then the site lives at `https://personalweb.pages.dev`.
+- The domain, once chosen. Steps 1 to 4 work without it; until then the site lives at `https://personalweb.<your-subdomain>.workers.dev`.
 
-## Step 1: Create the Pages project
+## Step 1: Give Cloudflare access to the repo
 
-1. In the Cloudflare dashboard, open **Workers & Pages** and choose **Create** (or **Create application**).
-2. Pick the **Pages** tab, then **Use direct upload** (sometimes labelled **Upload assets**). Do not pick "Connect to Git".
-3. Name the project `personalweb`. The name becomes the free address `personalweb.pages.dev`; if it is taken, pick another name and use it wherever this guide says `personalweb`.
-4. Cloudflare asks for files to upload. Either skip it, or build locally and drop in the `dist/` folder:
+Cloudflare only sees repos that its GitHub App is allowed to read. If `personalweb` does not show up when you import a repository, this is why.
 
-   ```sh
-   npm ci
-   npm run build   # creates dist/
-   ```
+1. In GitHub, open your avatar menu → **Settings → Applications → Installed GitHub Apps**.
+2. If **Cloudflare Workers and Pages** is listed, choose **Configure**. If it is not listed, go to step 2 below: Cloudflare installs it the first time you connect GitHub.
+3. Under **Repository access**, either choose **All repositories**, or keep **Only select repositories** and add `markosaric/personalweb`.
+4. **Save**.
 
-5. Once the project exists, open **Settings → Builds & deployments** (or **Settings → General**) and check that the **production branch** is `main`. Deploys tagged with any other branch become previews.
+The app gets read access to the code and write access to checks, deployments and pull request comments, which it uses to report build results. It cannot push code.
 
-## Step 2: Find your account ID
+## Step 2: Create the Worker from the repo
 
-On the **Workers & Pages** overview page, the **Account ID** is shown in the right-hand column (you can also copy it from the dashboard URL: `dash.cloudflare.com/<account-id>/...`). Copy it; it is not secret, but it goes into GitHub secrets next to the token for tidiness.
+1. In the Cloudflare dashboard, open **Workers & Pages → Create → Workers → Import a repository** (the screen with "Select a repository").
+2. Pick the `markosaric` GitHub account. If it is not in the list yet, choose **Connect GitHub**, sign in and install the app as in step 1.
+3. Search for `personalweb` and choose **Select**. If it still does not appear, refresh the page after step 1.
+4. Fill in the build settings:
 
-## Step 3: Create an API token for GitHub
+   | Setting | Value |
+   | --- | --- |
+   | Project name | `personalweb` (must match `name` in `wrangler.jsonc`) |
+   | Build command | `npm run build` |
+   | Deploy command | `npx wrangler deploy` |
+   | Non-production branch deploy command | `npx wrangler versions upload` |
+   | Path (root directory) | `/` |
 
-1. Go to **My Profile → API Tokens** (<https://dash.cloudflare.com/profile/api-tokens>) and choose **Create Token**.
-2. Choose **Create Custom Token** (at the bottom).
-3. Fill it in:
-   - **Token name:** `personalweb GitHub Actions`
-   - **Permissions:** `Account` · `Cloudflare Pages` · `Edit`
-   - **Account resources:** `Include` · your account
-   - **Client IP filtering** and **TTL:** leave empty (GitHub's runners have changing IP addresses).
-4. **Continue to summary → Create Token**, and copy the token. Cloudflare shows it only once.
+5. Open **Advanced settings → Build variables** and add `NODE_VERSION` = `22`, so the build uses the same Node version as `.nvmrc`.
+6. Choose **Create and deploy**. The first build starts straight away; follow it on the build log page. When it finishes, Cloudflare shows the `*.workers.dev` address of the live site.
 
-This token can only deploy Pages projects in your account. It cannot touch DNS, the domain or anything else.
+## Step 3: Check the branch settings
 
-## Step 4: Add the secrets to GitHub
+Open **Workers & Pages → personalweb → Settings → Build**:
 
-In the repo on GitHub, open **Settings → Secrets and variables → Actions → New repository secret** and add two secrets:
+- **Git repository:** `markosaric/personalweb`.
+- **Branch control → Production branch:** `main`.
+- **Builds for non-production branches:** enabled. This is what builds PRs and gives them preview URLs.
+- **Preview URLs** (under **Settings → Domains & Routes**): enabled, so each preview version gets its own address.
 
-| Name | Value |
-| --- | --- |
-| `CLOUDFLARE_API_TOKEN` | The token from step 3 |
-| `CLOUDFLARE_ACCOUNT_ID` | The account ID from step 2 |
+Preview addresses look like `https://<branch>-personalweb.<your-subdomain>.workers.dev`, with odd characters in the branch name turned into `-`. The address for each build is on the build's page in Cloudflare and on the commit's check in GitHub.
 
-## Step 5: Add the workflow
-
-The workflow is already in the repo at [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml); it is copied below for reference. Do steps 1 to 4 before it first runs, because the **Deploy** job fails without the Pages project and the two secrets (the **Build** job works either way). Then push any commit to a pull request: you should see the **Build** check pass and a preview link appear.
-
-```yaml
-name: Build and deploy
-
-on:
-  pull_request:
-  push:
-    branches: [main]
-
-# One run per branch at a time; a newer push cancels the older run.
-concurrency:
-  group: deploy-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
-permissions:
-  contents: read
-
-jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - run: npm ci
-
-      # `npm run build` runs `astro check` first, so type errors fail the PR.
-      - run: npm run build
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist
-          retention-days: 3
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    # Pull requests from forks get no secrets, so they only build.
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    permissions:
-      contents: read
-      deployments: write
-    environment:
-      name: ${{ github.event_name == 'pull_request' && 'preview' || 'production' }}
-      url: ${{ steps.deploy.outputs.deployment-url }}
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-
-      - id: deploy
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: pages deploy dist --project-name=personalweb --branch=${{ github.head_ref || github.ref_name }} --commit-dirty=true
-```
-
-What the pieces do:
-
-- **`build`** runs for every trigger. It uses the Node version in `.nvmrc`, installs exactly what `package-lock.json` pins, and runs `npm run build` (which is `astro check && astro build`).
-- **`deploy`** uploads the built `dist/` folder. `--branch` tells Cloudflare which branch the files came from: `main` becomes production, anything else becomes a preview at `https://<branch>.personalweb.pages.dev` (Cloudflare turns `/` and other odd characters in branch names into `-`).
-- **`environment`** makes the deploy show up under **Deployments** on the repo page and puts a "View deployment" button on the PR.
-- **`gitHubToken`** lets the Cloudflare action link the deployment back to GitHub.
-
-When the PR's checks are green and the preview looks right, merge it. Every merge or push to `main` is a production deploy. Check the **Actions** tab, then open `https://personalweb.pages.dev`.
-
-### Make the build check required (optional, recommended)
+## Step 4: Make the build check required (optional, recommended)
 
 So nothing can be merged into `main` without building:
 
-1. GitHub repo **Settings → Rules → Rulesets → New ruleset → New branch ruleset** (or **Settings → Branches → Add branch protection rule** on older layouts).
-2. Target the default branch (`main`).
-3. Turn on **Require status checks to pass** and add the check **`Build`**.
-4. Save. You can still merge your own PRs; the button just waits for the check.
+1. Open a test PR first, so GitHub has seen Cloudflare's check at least once.
+2. GitHub repo **Settings → Rules → Rulesets → New ruleset → New branch ruleset** (or **Settings → Branches → Add branch protection rule** on older layouts).
+3. Target the default branch (`main`).
+4. Turn on **Require status checks to pass** and add Cloudflare's check (it is named after the Worker, for example **Workers Builds: personalweb**).
+5. Save.
 
-## Step 6: Connect your domain
+## Step 5: Connect your domain
 
-Do this once the domain is decided.
+Do this once the domain is decided. A custom domain on a Worker needs the domain's DNS on Cloudflare.
 
-### If the domain is on Cloudflare (simplest)
+1. Either buy the domain with **Cloudflare Registrar** (at-cost prices, under **Domain Registration**), or add an existing domain with **Add a domain** and change its nameservers at your current registrar to the two Cloudflare gives you. Wait until the domain is **Active** (minutes to a few hours).
+2. **Workers & Pages → personalweb → Settings → Domains & Routes → Add → Custom domain**.
+3. Enter the bare domain, for example `example.com`, and confirm. Cloudflare creates the DNS record and the HTTPS certificate itself.
+4. Repeat for `www.example.com` if you want it to work too, or send `www` to the bare domain with the domain's **Rules → Redirect Rules → "Redirect from WWW to root"** template.
+5. Optionally, turn off the `workers.dev` address under **Domains & Routes** so the site has one public address.
 
-Either buy it with **Cloudflare Registrar** (at-cost prices, under **Domain Registration** in the dashboard) or add an existing domain to Cloudflare with **Add a domain** and change its nameservers at your current registrar to the two Cloudflare gives you. Wait until the dashboard says the domain is **Active** (minutes to a few hours).
-
-Then:
-
-1. **Workers & Pages → personalweb → Custom domains → Set up a custom domain.**
-2. Enter the bare domain, for example `example.com`, and confirm. Cloudflare creates the DNS record and the HTTPS certificate itself.
-3. Repeat for `www.example.com` if you want it to work too.
-4. To send `www` to the bare domain (so there is one canonical address), add a redirect: domain **Rules → Redirect Rules → Create rule → "Redirect from WWW to root"** template.
-
-### If the domain stays at another DNS provider
-
-Only a subdomain such as `www.example.com` can be connected this way (the bare domain needs Cloudflare DNS):
-
-1. **Custom domains → Set up a custom domain**, enter `www.example.com`.
-2. At your DNS provider, add a `CNAME` record from `www` to `personalweb.pages.dev`.
-3. Wait for the status in Cloudflare to turn **Active**.
-4. At your registrar, forward the bare domain to `https://www.example.com`.
-
-### Tell Astro the domain
-
-Set `site` in `astro.config.mjs` so canonical URLs and social previews use the real address, and merge that as a normal PR:
+Then set `site` in `astro.config.mjs` so canonical URLs and social previews use the real address, and merge that as a normal PR:
 
 ```js
 export default defineConfig({
@@ -194,19 +104,28 @@ export default defineConfig({
 });
 ```
 
-## Step 7: Optional extras
+## Step 6: Clean up the old setup
 
-- **Web Analytics:** **Workers & Pages → personalweb → Metrics → Web Analytics → Enable**. It is free, cookie-free and needs no consent banner. Cloudflare injects the script itself when the domain is proxied by Cloudflare; otherwise it gives you a snippet to add to `src/layouts/`.
-- **Keep previews private:** **Settings → General → Access policy → Enable** puts preview URLs behind Cloudflare Access (free for up to 50 users), so unfinished talks and articles are not public.
-- **Stop search engines indexing previews:** Cloudflare already sends `X-Robots-Tag: noindex` on `*.pages.dev` preview addresses, so nothing to do.
+The site was first deployed to Cloudflare **Pages** by GitHub Actions. That setup is gone from the repo, so remove what is left of it:
+
+1. GitHub repo **Settings → Secrets and variables → Actions**: delete `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
+2. Cloudflare **My Profile → API Tokens**: delete the token you made for GitHub Actions.
+3. Cloudflare **Workers & Pages**: open the old **Pages** project `personalweb` (the one with a `pages.dev` address), **Settings → Delete project**. Do this after the new Worker is live, and move any custom domain over first.
+4. GitHub repo **Settings → Environments**: delete `preview` and `production` if you no longer want them listed.
+
+## Optional extras
+
+- **Web Analytics:** **Workers & Pages → personalweb → Metrics**, or the account-level **Web Analytics** page, then enable it for the site's domain. It is free and cookie-free, so no consent banner is needed.
+- **Build watch paths:** under **Settings → Build → Build watch paths** you can skip builds for commits that only touch `docs/**`, for example.
 
 ## Day to day
 
 | You want to | Do this |
 | --- | --- |
 | Publish a change | Merge a PR into `main`. Live in about a minute. |
-| See a change before it goes live | Open a PR and use the preview link on it. |
-| Roll back a bad release | Cloudflare **Workers & Pages → personalweb → Deployments**, find the last good production deploy, **⋯ → Rollback to this deployment**. Then fix or revert on `main`, because the next commit to `main` deploys it again. |
+| See a change before it goes live | Push to a branch or open a PR and use the preview URL from the Cloudflare check. |
+| Redeploy without a code change | **Workers & Pages → personalweb → Deployments**, pick the latest build and **Retry build**. |
+| Roll back a bad release | **Workers & Pages → personalweb → Deployments**, find the last good version, **⋯ → Rollback**. Then fix or revert on `main`, because the next commit deploys `main` again. |
 
 ## Upcoming talks and the build date
 
@@ -216,13 +135,9 @@ The site is fully static, so anything that depends on today's date is fixed at b
 
 | Symptom | Likely cause and fix |
 | --- | --- |
-| Deploy step fails with `Authentication error` or `10000` | The token is wrong, expired or lacks **Cloudflare Pages · Edit**. Create a new one (step 3) and update the `CLOUDFLARE_API_TOKEN` secret. |
-| Deploy fails with `Project not found` | `--project-name` in the workflow does not match the Pages project name, or the account ID secret is for another account. |
-| Build passes locally but fails in Actions | Usually a different Node version. Check `.nvmrc` matches what you use locally, and that `package-lock.json` is committed. |
-| PRs from a fork only build, no preview | Expected: GitHub does not give secrets to fork PRs. |
-| Custom domain stuck on "Verifying" | DNS has not propagated yet, or the CNAME points at the wrong name. Give it an hour, then check the record. |
-| A past talk still shows as upcoming | The site has not been rebuilt since the talk's date. The next commit to `main` fixes it. |
-
-## Switching to Azure later
-
-The plan kept Azure Static Web Apps as the alternative. The build is the same; only the `deploy` job changes (to `Azure/static-web-apps-deploy` with an Azure deployment token), plus moving the domain. Nothing in the site code depends on Cloudflare.
+| `personalweb` does not appear under "Select a repository" | The Cloudflare GitHub App has no access to it. Add the repo in step 1, then refresh. |
+| Build fails on `astro check` or a Node error | Usually the Node version. Check the `NODE_VERSION` build variable matches `.nvmrc`. |
+| Deploy step fails with a name mismatch | The Worker name in the dashboard and `name` in `wrangler.jsonc` must be the same. |
+| PRs get no preview | **Builds for non-production branches** is off, or the non-production deploy command is missing (step 3). |
+| Custom domain cannot be added | The domain's DNS is not on Cloudflare yet, or it is still pending. |
+| A past talk still shows as upcoming | The site has not been rebuilt since the talk's date. The next commit to `main` fixes it, or use **Retry build**. |
