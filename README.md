@@ -96,7 +96,7 @@ date: 2026-11-05
 Article body.
 ```
 
-The "Latest articles" section and its menu link appear once there is at least one article.
+The "Latest articles" section and its menu link appear once there is at least one article. Each article gets its own page at `/articles/<file-name>/`, linked from its card. The body supports headings, lists, tables, quotes and code blocks.
 
 ## Theme
 

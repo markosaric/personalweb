@@ -16,7 +16,9 @@ const { articles } = Astro.props;
         articles.map((a) => (
           <article>
             <div class="tag muted">{a.data.tag}</div>
-            <h3>{a.data.title}</h3>
+            <h3>
+              <a href={`/articles/${a.id}/`}>{a.data.title}</a>
+            </h3>
             <p class="muted">{a.data.summary}</p>
           </article>
         ))
@@ -44,6 +46,16 @@ const { articles } = Astro.props;
   h3 {
     margin: 8px 0;
     font-size: 20px;
+  }
+
+  h3 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  h3 a:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
   }
 
   p {

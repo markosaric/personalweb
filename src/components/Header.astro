@@ -1,20 +1,22 @@
 ---
 interface Props {
   showArticles: boolean;
+  /** Prefix for the section links: '' on the homepage, '/' on other pages. */
+  base?: string;
 }
 
-const { showArticles } = Astro.props;
+const { showArticles, base = '' } = Astro.props;
 const links = [
-  { href: '#talks', label: 'Speaking' },
-  { href: '#about', label: 'About' },
-  { href: '#certs', label: 'Certifications' },
-  ...(showArticles ? [{ href: '#articles', label: 'Articles' }] : []),
+  { href: `${base}#talks`, label: 'Speaking' },
+  { href: `${base}#about`, label: 'About' },
+  { href: `${base}#certs`, label: 'Certifications' },
+  ...(showArticles ? [{ href: `${base}#articles`, label: 'Articles' }] : []),
   { href: '#contact', label: 'Contact' },
 ];
 ---
 
 <header class="site-header container">
-  <a href="#top" class="brand">marko<span>.</span>saric</a>
+  <a href={`${base}#top`} class="brand">marko<span>.</span>saric</a>
   <nav aria-label="Main">
     {links.map((l) => <a href={l.href}>{l.label}</a>)}
     <button type="button" class="theme-toggle" aria-label="Switch to dark mode" data-theme-toggle>
