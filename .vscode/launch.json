@@ -1,0 +1,40 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Debugs server-side code: .astro frontmatter, endpoints, and TS modules.
+      // Runs in the integrated terminal so nvm's Node 22 from your shell is used.
+      // --ignore-lock lets this start even if another astro dev server is already
+      // running for this project (Astro would otherwise refuse to start).
+      "name": "Astro: dev server",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev -- --ignore-lock",
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**"],
+      "serverReadyAction": {
+        // Reads the URL from Astro's output, so this still works if 4321 is
+        // taken and Astro moves to another port.
+        "pattern": "Local\\s.*?(https?://localhost:[0-9]+)",
+        "uriFormat": "%s",
+        "action": "openExternally"
+      }
+    },
+    {
+      // Same server, plus a Chrome debug session for scripts running in the page.
+      "name": "Astro: dev server + Chrome",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev -- --ignore-lock",
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**"],
+      "serverReadyAction": {
+        "pattern": "Local\\s.*?(https?://localhost:[0-9]+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome",
+        "webRoot": "${workspaceFolder}",
+        "killOnServerStop": true
+      }
+    }
+  ]
+}
