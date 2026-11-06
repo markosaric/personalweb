@@ -4,11 +4,17 @@ Marko Šarić's personal website: an [Astro](https://astro.build) static site bu
 
 ## Preview
 
-Homepage as built from this code (1280 px wide), light and dark:
+Homepage as built from this code (1280 px wide), light and dark. The screenshots use fictional test content (upcoming talks, three extra past talks and three articles, all marked "(test)") so every section shows, including "Upcoming talks" and "Latest articles". None of that test content is in the repo.
 
 | Light | Dark |
 | --- | --- |
 | ![Homepage in light mode](docs/screenshots/home-light.png) | ![Homepage in dark mode](docs/screenshots/home-dark.png) |
+
+An article page:
+
+| Light | Dark |
+| --- | --- |
+| ![Article page in light mode](docs/screenshots/article-light.png) | ![Article page in dark mode](docs/screenshots/article-dark.png) |
 
 On a phone (390 px):
 
@@ -17,9 +23,9 @@ On a phone (390 px):
   <img src="docs/screenshots/home-dark-phone.png" alt="Homepage on a phone, dark mode" width="260">
 </p>
 
-The design these screenshots come from is in [`docs/design/`](docs/design/) (`keynote.dc.html`), with the live version on the Personal Landing Page Design canvas. The "Upcoming talks" block only appears once a talk is booked, so it is not in these screenshots; the design canvas shows it.
+The design these screenshots come from is in [`docs/design/`](docs/design/) (`keynote.dc.html`), with the live version on the Personal Landing Page Design canvas.
 
-To refresh the screenshots, run `npm run build && npm run preview` and capture `http://localhost:4321` at 1280 px (full page) and 390 px, in both colour schemes.
+To refresh the screenshots, add some test talks and articles, run `npm run build && npm run preview`, and capture `http://localhost:4321` and one article page at 1280 px (full page) and the homepage at 390 px, in both colour schemes.
 
 ## Run it
 
