@@ -16,7 +16,9 @@ npm run preview  # serves dist/
 | What | File |
 | --- | --- |
 | Name, headline, tagline, bio, profile links, socials | `src/data/profile.ts` |
-| Talks I offer and past talks | `src/data/talks.ts` |
+| Talks I offer (Markdown) | `src/content/talks/offers/*.md` |
+| Upcoming talks (Markdown) | `src/content/talks/upcoming/*.md` |
+| Past talks (Markdown) | `src/content/talks/past/*.md` |
 | Experience timeline | `src/data/jobs.ts` |
 | Certifications (order, badge images) | `src/data/certifications.ts` |
 | Articles (Markdown) | `src/content/articles/*.md` |
@@ -26,7 +28,39 @@ The hero numbers are computed at build time: years in software from 2009, sessio
 
 ### Adding a talk
 
-Add a line at the top of `pastTalks` in `src/data/talks.ts`. `slides` and `video` are optional links shown next to the talk.
+Create `src/content/talks/past/<year>-<event>.md`:
+
+```md
+---
+title: Talk title
+event: Weblica 2027
+year: 2027
+slides: https://...   # optional
+video: https://...    # optional
+---
+```
+
+Talks sort by `year`, newest first. When a year has several talks, add `order` (higher shows first). An entry that covers several events sets `sessions` so the hero count stays right.
+
+### Adding an upcoming talk
+
+Create `src/content/talks/upcoming/<year>-<event>.md`:
+
+```md
+---
+title: Talk title
+event: Weblica 2027
+date: 2027-05-14
+city: Zagreb                 # optional
+url: https://...             # optional, the event page
+---
+```
+
+The soonest talk is featured as "Next up"; later ones are listed under it. The "Upcoming talks" block only shows while at least one talk is dated today or later. "Today" is the build date, so rebuild the site after a talk to move it along. Once a talk's date has passed it is listed under past talks automatically and counts toward sessions delivered. Move the file into `past/` (with `year` instead of `date`) whenever you want to add slides or video links.
+
+### Adding a talk offer
+
+Create `src/content/talks/offers/my-talk.md` with `title`, `tag`, `blurb` and `order` (card position, lowest first). Set `draft: true` to hide one without deleting it.
 
 ### Adding an article
 
