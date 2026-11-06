@@ -5,7 +5,7 @@ Planning and design material for Marko Šarić's personal website.
 | File | What it is |
 | --- | --- |
 | [plan.md](plan.md) | The project plan: goals, site structure, data sources, tech stack, phases and answered questions. Exported from the Claude Doc on 5 Nov 2026. |
-| [deployment.md](deployment.md) | Step-by-step setup of Cloudflare Pages hosting and the GitHub Actions CI/CD (PR checks, previews, production and nightly deploys, custom domain). |
+| [deployment.md](deployment.md) | Step-by-step setup of Cloudflare Pages hosting and the GitHub Actions CI/CD (PR checks, previews, production deploys, custom domain). |
 | [design/](design/) | The approved **Keynote** homepage design (canvas source and every image it uses). |
 
 ## Decisions so far

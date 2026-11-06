@@ -8,7 +8,6 @@ How to put the site on Cloudflare Pages and have GitHub Actions check, preview a
 | --- | --- |
 | Pull request opened or updated | GitHub Actions type-checks and builds the site. If the build passes, it uploads a **preview** to Cloudflare and links it on the PR. |
 | Push or merge to `main` | Same build, then a **production** deploy to your domain. |
-| Every night (03:17 UTC) | A fresh production build, so "Upcoming talks" moves along on its own (see [Why a nightly build](#why-a-nightly-build)). |
 | "Run workflow" button in GitHub | A production deploy on demand. |
 
 Everything runs on free tiers: Cloudflare Pages (unlimited bandwidth, 500 builds a month, though this setup builds on GitHub so it uses none of them) and GitHub Actions (free for public repos, 2,000 minutes a month for private ones; one run takes about a minute).
@@ -21,11 +20,11 @@ Cloudflare Pages can deploy a site in two ways. This guide uses the second.
 | --- | --- | --- |
 | How it works | Cloudflare watches the repo and builds it on its own servers | GitHub Actions builds the site and uploads `dist/` to Cloudflare |
 | PR checks in GitHub | A status link only; a failing build does not block the PR | A real check that can be made required before merging |
-| Nightly rebuild | Needs a deploy hook plus something to call it on a schedule | One `schedule:` line in the workflow |
+| Redeploy without a code change | "Retry deployment" in the Cloudflare dashboard | "Run workflow" button in GitHub |
 | Where the build lives | Cloudflare dashboard settings | `.github/workflows/deploy.yml`, versioned with the code |
 | Secrets to manage | None | One API token and the account ID |
 
-The nightly rebuild decides it: the "Upcoming talks" block is worked out at build time, so the site has to rebuild by itself every day. With GitHub Actions that, the PR checks and the deploy all live in one file in the repo.
+Both build every pull request and every commit to `main`. GitHub Actions wins on the PR check: a broken build shows as a failed check that can block the merge, and the whole pipeline lives in one file in the repo where it is reviewed like any other change.
 
 One thing to know before you start: a Pages project created for Direct Upload **cannot be switched to the Git integration later**. If you ever want that, you create a new Pages project and move the domain to it, which takes a few minutes.
 
@@ -86,9 +85,6 @@ on:
   pull_request:
   push:
     branches: [main]
-  schedule:
-    # Nightly rebuild so upcoming talks move to past talks on their own.
-    - cron: '17 3 * * *'
   workflow_dispatch:
 
 # One run per branch at a time; a newer push cancels the older run.
@@ -214,14 +210,11 @@ export default defineConfig({
 | Publish a change | Merge a PR into `main`. Live in about a minute. |
 | See a change before it goes live | Open a PR and use the preview link on it. |
 | Redeploy without a code change | GitHub **Actions → Build and deploy → Run workflow** on `main`. |
-| Roll back a bad release | Cloudflare **Workers & Pages → personalweb → Deployments**, find the last good production deploy, **⋯ → Rollback to this deployment**. Then fix or revert on `main`, because the next nightly build deploys `main` again. |
-| Change the nightly time | Edit the `cron` line (UTC) in `.github/workflows/deploy.yml`. |
+| Roll back a bad release | Cloudflare **Workers & Pages → personalweb → Deployments**, find the last good production deploy, **⋯ → Rollback to this deployment**. Then fix or revert on `main`, because the next commit to `main` deploys it again. |
 
-## Why a nightly build
+## Upcoming talks and the build date
 
-The site is fully static, so anything that depends on today's date is fixed at build time. Upcoming talks are listed while their date is today or later, and move to past talks (and into the "sessions delivered" count) once it has passed (see the main [README](../README.md#adding-an-upcoming-talk)). Without a scheduled build, a talk would stay "upcoming" until the next time you pushed something. The same nightly run will later refresh the Microsoft Learn certifications and GitHub repos planned in [plan.md](plan.md).
-
-GitHub pauses scheduled workflows in a repo with no activity for 60 days and emails you first; one click on **Enable workflow** in the Actions tab turns it back on.
+The site is fully static, so anything that depends on today's date is fixed at build time. Upcoming talks are listed while their date is today or later, and move to past talks (and into the "sessions delivered" count) once it has passed (see the main [README](../README.md#adding-an-upcoming-talk)). Since the site only rebuilds on a commit, a talk stays "upcoming" until the next deploy after its date. To move it along without a code change, use **Run workflow** on `main` (see [Day to day](#day-to-day)).
 
 ## Troubleshooting
 
@@ -232,7 +225,7 @@ GitHub pauses scheduled workflows in a repo with no activity for 60 days and ema
 | Build passes locally but fails in Actions | Usually a different Node version. Check `.nvmrc` matches what you use locally, and that `package-lock.json` is committed. |
 | PRs from a fork only build, no preview | Expected: GitHub does not give secrets to fork PRs. |
 | Custom domain stuck on "Verifying" | DNS has not propagated yet, or the CNAME points at the wrong name. Give it an hour, then check the record. |
-| Site still shows yesterday's upcoming talks | The nightly run failed or is paused. Check the Actions tab and re-run it. |
+| A past talk still shows as upcoming | The site has not been rebuilt since the talk's date. Run the workflow on `main`. |
 
 ## Switching to Azure later
 

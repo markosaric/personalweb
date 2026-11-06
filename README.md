@@ -38,7 +38,7 @@ npm run preview  # serves dist/
 
 ## Deploy
 
-The site is hosted on Cloudflare Pages and deployed by GitHub Actions: pull requests get a build check and a preview link, merges to `main` go live, and a nightly build keeps upcoming talks current. Setup steps are in [`docs/deployment.md`](docs/deployment.md).
+The site is hosted on Cloudflare Pages and deployed by GitHub Actions: pull requests get a build check and a preview link, and merges to `main` go live. Setup steps are in [`docs/deployment.md`](docs/deployment.md).
 
 ## Where the content lives
 
