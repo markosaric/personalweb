@@ -8,7 +8,6 @@ How to put the site on Cloudflare Pages and have GitHub Actions check, preview a
 | --- | --- |
 | Pull request opened or updated | GitHub Actions type-checks and builds the site. If the build passes, it uploads a **preview** to Cloudflare and links it on the PR. |
 | Push or merge to `main` | Same build, then a **production** deploy to your domain. |
-| "Run workflow" button in GitHub | A production deploy on demand. |
 
 Everything runs on free tiers: Cloudflare Pages (unlimited bandwidth, 500 builds a month, though this setup builds on GitHub so it uses none of them) and GitHub Actions (free for public repos, 2,000 minutes a month for private ones; one run takes about a minute).
 
@@ -20,7 +19,6 @@ Cloudflare Pages can deploy a site in two ways. This guide uses the second.
 | --- | --- | --- |
 | How it works | Cloudflare watches the repo and builds it on its own servers | GitHub Actions builds the site and uploads `dist/` to Cloudflare |
 | PR checks in GitHub | A status link only; a failing build does not block the PR | A real check that can be made required before merging |
-| Redeploy without a code change | "Retry deployment" in the Cloudflare dashboard | "Run workflow" button in GitHub |
 | Where the build lives | Cloudflare dashboard settings | `.github/workflows/deploy.yml`, versioned with the code |
 | Secrets to manage | None | One API token and the account ID |
 
@@ -85,7 +83,6 @@ on:
   pull_request:
   push:
     branches: [main]
-  workflow_dispatch:
 
 # One run per branch at a time; a newer push cancels the older run.
 concurrency:
@@ -209,12 +206,11 @@ export default defineConfig({
 | --- | --- |
 | Publish a change | Merge a PR into `main`. Live in about a minute. |
 | See a change before it goes live | Open a PR and use the preview link on it. |
-| Redeploy without a code change | GitHub **Actions → Build and deploy → Run workflow** on `main`. |
 | Roll back a bad release | Cloudflare **Workers & Pages → personalweb → Deployments**, find the last good production deploy, **⋯ → Rollback to this deployment**. Then fix or revert on `main`, because the next commit to `main` deploys it again. |
 
 ## Upcoming talks and the build date
 
-The site is fully static, so anything that depends on today's date is fixed at build time. Upcoming talks are listed while their date is today or later, and move to past talks (and into the "sessions delivered" count) once it has passed (see the main [README](../README.md#adding-an-upcoming-talk)). Since the site only rebuilds on a commit, a talk stays "upcoming" until the next deploy after its date. To move it along without a code change, use **Run workflow** on `main` (see [Day to day](#day-to-day)).
+The site is fully static, so anything that depends on today's date is fixed at build time. Upcoming talks are listed while their date is today or later, and move to past talks (and into the "sessions delivered" count) once it has passed (see the main [README](../README.md#adding-an-upcoming-talk)). Since the site only rebuilds on a commit, a talk stays "upcoming" until the next deploy after its date. Adding or updating a talk, article or anything else moves it along.
 
 ## Troubleshooting
 
@@ -225,7 +221,7 @@ The site is fully static, so anything that depends on today's date is fixed at b
 | Build passes locally but fails in Actions | Usually a different Node version. Check `.nvmrc` matches what you use locally, and that `package-lock.json` is committed. |
 | PRs from a fork only build, no preview | Expected: GitHub does not give secrets to fork PRs. |
 | Custom domain stuck on "Verifying" | DNS has not propagated yet, or the CNAME points at the wrong name. Give it an hour, then check the record. |
-| A past talk still shows as upcoming | The site has not been rebuilt since the talk's date. Run the workflow on `main`. |
+| A past talk still shows as upcoming | The site has not been rebuilt since the talk's date. The next commit to `main` fixes it. |
 
 ## Switching to Azure later
 
