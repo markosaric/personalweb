@@ -30,7 +30,7 @@ One scrolling homepage with a sticky menu, plus a separate Speaking page once yo
 Because organisers and attendees come first, Speaking moves up to sit right after the hero, and the hero's main button is "Invite me to speak". About, experience and a LinkedIn link follow for recruiters; there is no CV download. Attendees get slides and recordings next to each talk.
 
 1. **Hero**: your headshot, name, the line "Software Developer · Conference Speaker · Microsoft Certified" with your tagline under it, and buttons for "Invite me to speak" and "Connect on LinkedIn".
-2. **Speaking**: "Talks I offer" cards with session abstracts, then a "Past talks" list with links to slides and recordings where you have them. An "Upcoming" block appears only when a talk is booked.
+2. **Speaking**: "Talks I offer" cards with session abstracts, then a "Past talks" list with links to slides and recordings where you have them. Between them sits an "Upcoming talks" block, shown only while a talk is booked: the soonest one as a highlighted "Next up" banner, any later ones as rows below it. A talk moves to Past talks on its own once its date passes. Each talk is a Markdown file in `src/content/talks/` (`offers/`, `upcoming/`, `past/`), the same way articles are kept.
 3. **About me**: a short bio in first person, then CV highlights: current role, years of experience, key employers or projects, core skills grouped by area (cloud, DevOps, .NET, etc.).
 4. **Experience timeline**: 4 to 6 roles or milestones, newest first, with a link to LinkedIn for the full history. No CV download.
 5. **Certifications**: badge grid with the certification name, issuer, date and a "verify" link to Microsoft Learn. Active certs first, older ones in a collapsed list.
@@ -119,7 +119,7 @@ Your CV (July 2025 version) covers most of the About, Certifications and Speakin
 
 **Checked against [Sessionize](https://sessionize.com/marko-saric/)** (as of 4 Nov 2026):
 
-- Current role confirmed: Senior Software Engineer at Syskit (as on Sessionize). The CV's GlobalLogic role becomes the previous one. No upcoming talks for now, so the Speaking section leads with "Talks I offer" and past talks, and the Upcoming block stays hidden until there is one.
+- Current role confirmed: Senior Software Engineer at Syskit (as on Sessionize). The CV's GlobalLogic role becomes the previous one. No upcoming talks for now, so the Speaking section leads with "Talks I offer" and past talks, and the Upcoming talks block stays hidden until there is one (design chosen 6 Nov 2026: option C, next talk featured).
 - No upcoming events are listed; the latest is Weblica 2024. Advanced Technology Days 17 and 19 and Change 2018 are in the CV but not on Sessionize.
 - Sessionize has sessions the CV lacks: "From Prompts to Purpose: Architecting Agentic AI in the Azure Cloud", "Well-being developer after 40", "Where Code Ends Logic Apps Starts", "Demistifikacija Azure Cosmos DB" and others. The Speaking section can show these as "Talks I offer" for organisers.
 

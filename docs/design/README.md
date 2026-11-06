@@ -1,8 +1,8 @@
 # Keynote design
 
-The approved homepage design, exported from the design canvas on 5 Nov 2026.
+The approved homepage design, exported from the Personal Landing Page Design canvas on 5 Nov 2026 and updated on 6 Nov 2026 with the Upcoming talks block (shown with placeholder dates; the `showUpcoming` tweak hides it).
 
-- `keynote.dc.html`: the design source. It holds the markup, the light and dark themes, and the content data: talks, past talks, jobs and certifications. It is a canvas component, so it won't open as a normal web page. Use it as the reference when building the Astro components.
+- `keynote.dc.html`: the design source. It holds the markup, the light and dark themes, and the content data: talks, upcoming talks, past talks, jobs and certifications. It is a canvas component, so it won't open as a normal web page. Use it as the reference when building the Astro components.
 - `canvas.json`: the canvas layout.
 - `assets/`: every image the design uses.
 
