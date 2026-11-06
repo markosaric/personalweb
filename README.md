@@ -2,6 +2,25 @@
 
 Marko Šarić's personal website: an [Astro](https://astro.build) static site built from the approved Keynote design in [`docs/design/`](docs/design/).
 
+## Preview
+
+Homepage as built from this code (1280 px wide), light and dark:
+
+| Light | Dark |
+| --- | --- |
+| ![Homepage in light mode](docs/screenshots/home-light.png) | ![Homepage in dark mode](docs/screenshots/home-dark.png) |
+
+On a phone (390 px):
+
+<p>
+  <img src="docs/screenshots/home-light-phone.png" alt="Homepage on a phone, light mode" width="260">
+  <img src="docs/screenshots/home-dark-phone.png" alt="Homepage on a phone, dark mode" width="260">
+</p>
+
+The design these screenshots come from is in [`docs/design/`](docs/design/) (`keynote.dc.html`), with the live version on the Personal Landing Page Design canvas. The "Upcoming talks" block only appears once a talk is booked, so it is not in these screenshots; the design canvas shows it.
+
+To refresh the screenshots, run `npm run build && npm run preview` and capture `http://localhost:4321` at 1280 px (full page) and 390 px, in both colour schemes.
+
 ## Run it
 
 ```sh
