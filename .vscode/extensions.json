@@ -1,0 +1,4 @@
+{
+  // Adds .astro language support, including breakpoints in .astro files.
+  "recommendations": ["astro-build.astro-vscode"]
+}
