@@ -64,6 +64,23 @@ a{color:#60A5FA}a:hover{color:#93C5FD}
           </article>
         </sc-for>
       </div>
+      <sc-if value="{{showUpcoming}}" hint-placeholder-val="{{ true }}">
+        <h3 style="margin: 56px 0 16px; font-size: 22px">Upcoming talks</h3>
+        <article style="background: {{t.feature}}; color: #F1F5F9; border: 1px solid {{t.line}}; border-radius: 16px; padding: 28px 32px; display: flex; flex-wrap: wrap; gap: 24px 32px; align-items: center">
+          <div style="flex: 1 1 480px; min-width: 0">
+            <p style="margin: 0 0 8px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #93C5FD">Next up · [DD Month YYYY]</p>
+            <h4 style="margin: 0 0 8px; font-family: 'Space Grotesk', sans-serif; font-size: 26px; line-height: 1.25">From Prompts to Purpose: Architecting Agentic AI in the Azure Cloud</h4>
+            <p style="margin: 0; color: #CBD5E1">[Event name] · [City]</p>
+          </div>
+          <a href="#talks" style="display: inline-flex; align-items: center; min-height: 44px; padding: 14px 24px; border-radius: 10px; background: {{accent}}; color: #FFFFFF; font-weight: 600; text-decoration: none">Event page</a>
+        </article>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 16px 0; margin-top: 8px">
+          <span style="width: 110px; font-weight: 600; color: {{accent}}">[DD Mon YYYY]</span>
+          <span style="flex: 1 1 320px; font-weight: 500">Demystifying Azure Cosmos DB</span>
+          <span style="color: {{t.muted}}">[Event name] · [City]</span>
+          <a href="#talks" style="font-weight: 600">Event page</a>
+        </div>
+      </sc-if>
       <h3 style="margin: 56px 0 16px; font-size: 22px">Past talks</h3>
       <div style="display: flex; flex-direction: column">
         <sc-for list="{{past}}" as="p" hint-placeholder-count="5">
@@ -148,19 +165,20 @@ a{color:#60A5FA}a:hover{color:#93C5FD}
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2F6FEB","options":["#2F6FEB","#0EA5A4","#7C3AED","#E0592A"]},"startDark":{"editor":"boolean","default":true},"$preview":{"width":1280,"height":2900}}'>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2F6FEB","options":["#2F6FEB","#0EA5A4","#7C3AED","#E0592A"]},"startDark":{"editor":"boolean","default":true},"showUpcoming":{"editor":"boolean","default":true},"$preview":{"width":1280,"height":3150}}'>
 class Component extends DCLogic {
   pickTalks(list) { return (this.state && this.state.showTalks) ? list : list.slice(0, 5); }
   pickCerts(list) { return (this.state && this.state.showAll) ? list : list.slice(0, 5); }
   renderVals() {
     const dark = this.state && this.state.dark !== undefined ? this.state.dark : (this.props.startDark ?? true);
     const t = dark
-      ? { bg: '#0B1220', band: '#0F1A2E', card: '#14213A', text: '#F1F5F9', muted: '#A3B1C6', line: '#24324D', badge: '#1C2D4F', vig: 'rgba(11,18,32,.85)', scrim: 'linear-gradient(90deg, rgba(11,18,32,.94) 0%, rgba(11,18,32,.86) 55%, rgba(11,18,32,.6) 100%)' }
-      : { bg: '#FFFFFF', band: '#F3F6FB', card: '#FFFFFF', text: '#0F172A', muted: '#475569', line: '#DCE3EE', badge: '#E6EEFD', vig: 'rgba(15,23,42,.55)', scrim: 'linear-gradient(90deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,.88) 55%, rgba(255,255,255,.65) 100%)' };
+      ? { bg: '#0B1220', band: '#0F1A2E', card: '#14213A', feature: '#14213A', text: '#F1F5F9', muted: '#A3B1C6', line: '#24324D', badge: '#1C2D4F', vig: 'rgba(11,18,32,.85)', scrim: 'linear-gradient(90deg, rgba(11,18,32,.94) 0%, rgba(11,18,32,.86) 55%, rgba(11,18,32,.6) 100%)' }
+      : { bg: '#FFFFFF', band: '#F3F6FB', card: '#FFFFFF', feature: '#0F172A', text: '#0F172A', muted: '#475569', line: '#DCE3EE', badge: '#E6EEFD', vig: 'rgba(15,23,42,.55)', scrim: 'linear-gradient(90deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,.88) 55%, rgba(255,255,255,.65) 100%)' };
     return {
       t, accent: this.props.accent ?? '#2F6FEB',
       toggle: () => this.setState({ dark: !dark }),
       logoFilter: dark ? 'invert(1) hue-rotate(180deg)' : 'none',
+      showUpcoming: this.props.showUpcoming ?? true,
       talksOpen: !!(this.state && this.state.showTalks),
       talksLabel: (this.state && this.state.showTalks) ? 'Show fewer' : 'Show all 19 past talks',
       toggleTalks: () => this.setState({ showTalks: !(this.state && this.state.showTalks) }),

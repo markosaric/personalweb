@@ -30,13 +30,13 @@ One scrolling homepage with a sticky menu, plus a separate Speaking page once yo
 Because organisers and attendees come first, Speaking moves up to sit right after the hero, and the hero's main button is "Invite me to speak". About, experience and a LinkedIn link follow for recruiters; there is no CV download. Attendees get slides and recordings next to each talk.
 
 1. **Hero**: your headshot, name, the line "Software Developer · Conference Speaker · Microsoft Certified" with your tagline under it, and buttons for "Invite me to speak" and "Connect on LinkedIn".
-2. **Speaking**: "Talks I offer" cards with session abstracts, then a "Past talks" list with links to slides and recordings where you have them. An "Upcoming" block appears only when a talk is booked.
+2. **Speaking**: "Talks I offer" cards with session abstracts, then a "Past talks" list with links to slides and recordings where you have them. Between them sits an "Upcoming talks" block, shown only while a talk is booked: the soonest one as a highlighted "Next up" banner, any later ones as rows below it. A talk moves to Past talks on its own once its date passes. Each talk is a Markdown file in `src/content/talks/` (`offers/`, `upcoming/`, `past/`), the same way articles are kept.
 3. **About me**: a short bio in first person, then CV highlights: current role, years of experience, key employers or projects, core skills grouped by area (cloud, DevOps, .NET, etc.).
 4. **Experience timeline**: 4 to 6 roles or milestones, newest first, with a link to LinkedIn for the full history. No CV download.
 5. **Certifications**: badge grid with the certification name, issuer, date and a "verify" link to Microsoft Learn. Active certs first, older ones in a collapsed list.
 6. **Articles**: the 3 latest articles on the homepage, linking to a full Articles page with tags (Azure, DevOps, .NET, AI) and an RSS feed. Each talk can link to a matching article.
 7. **Open source / GitHub**: pinned repositories or recent activity, optional if your GitHub is mostly private.
-8. **Contact and social**: icons for LinkedIn, Sessionize, GitHub, Instagram and Facebook, plus an email link or a simple contact form.
+8. **Contact and social**: icons for LinkedIn, Sessionize, GitHub, Instagram and Facebook. LinkedIn is the way to get in touch; there is no email address or contact form on the site.
 
 Site-wide features in version 1: the site is English only, and a light/dark mode toggle starts from the visitor's system setting and remembers their choice. Articles are written as simple Markdown files. Talks given in Croatian keep their original title with an English subtitle.
 
@@ -71,7 +71,7 @@ I recommend **Astro on Azure Static Web Apps (free tier), with the code in a Git
 | Hugo + Netlify | Free + domain | Very fast builds | Go templates are less friendly to edit |
 | No-code builder (Framer, Wix, Squarespace) | \~10–25 EUR/month | Edit visually with no code | Monthly fee, auto-updating certs and sessions is hard, less "IT pro" signal |
 
-Azure versus Cloudflare comes down to message versus convenience. Azure says "Microsoft professional" to anyone who looks at how the site is built. Cloudflare is the easier one to run day to day, especially if you buy or move your domain there. The site code is identical for both, so we can switch later at no cost.
+Decision (6 Nov 2026): Cloudflare Pages for now. Azure versus Cloudflare comes down to message versus convenience. Azure says "Microsoft professional" to anyone who looks at how the site is built. Cloudflare is the easier one to run day to day, especially if you buy or move your domain there. The site code is identical for both, so we can switch later at no cost.
 
 With the recommended setup, updates work like this: you edit a small text file for a new talk or bio change (or ask me to), the push rebuilds the site, and a nightly scheduled build refreshes your Microsoft Learn certifications and GitHub repos.
 
@@ -81,7 +81,7 @@ Four phases, each ending with something you approve before the next starts. Time
 
 1. **Research (this week)**: done on my side with this plan. Gate: you answer the questions below and send photos, CV and links.
 2. **Proposal (about 1 week)**: I write the copy draft (bio, CV highlights, talk list), pick 2 visual directions, and build one clickable mock-up of the homepage. Gate: you choose a direction and approve the copy.
-3. **Build (1 to 2 weeks)**: set up the repo and hosting, build all sections, wire up Microsoft Learn and GitHub, load the sessions file, add the articles section, the dark mode toggle, the contact form and SEO basics (page titles, social preview image, sitemap). Gate: you review a preview link on desktop and phone.
+3. **Build (1 to 2 weeks)**: set up the repo and hosting, build all sections, wire up Microsoft Learn and GitHub, load the sessions file, add the articles section, the dark mode toggle, the contact section (LinkedIn link) and SEO basics (page titles, social preview image, sitemap). Gate: you review a preview link on desktop and phone.
 4. **Launch and handover (1 to 2 days)**: connect your domain with HTTPS, add privacy-friendly analytics if you want them, update your LinkedIn, Sessionize and GitHub profiles to point at the site, and leave a one-page "how to add a talk" guide.
 
 After launch, upkeep is adding a line to the sessions file per talk; certifications update themselves.
@@ -119,7 +119,7 @@ Your CV (July 2025 version) covers most of the About, Certifications and Speakin
 
 **Checked against [Sessionize](https://sessionize.com/marko-saric/)** (as of 4 Nov 2026):
 
-- Current role confirmed: Senior Software Engineer at Syskit (as on Sessionize). The CV's GlobalLogic role becomes the previous one. No upcoming talks for now, so the Speaking section leads with "Talks I offer" and past talks, and the Upcoming block stays hidden until there is one.
+- Current role confirmed: Senior Software Engineer at Syskit (as on Sessionize). The CV's GlobalLogic role becomes the previous one. No upcoming talks for now, so the Speaking section leads with "Talks I offer" and past talks, and the Upcoming talks block stays hidden until there is one (design chosen 6 Nov 2026: option C, next talk featured).
 - No upcoming events are listed; the latest is Weblica 2024. Advanced Technology Days 17 and 19 and Change 2018 are in the CV but not on Sessionize.
 - Sessionize has sessions the CV lacks: "From Prompts to Purpose: Architecting Agentic AI in the Azure Cloud", "Well-being developer after 40", "Where Code Ends Logic Apps Starts", "Demistifikacija Azure Cosmos DB" and others. The Speaking section can show these as "Talks I offer" for organisers.
 
@@ -150,6 +150,6 @@ Answer in the thread, in comments here, or by uploading files. The first group i
 - [ ] Do you own a domain already? If not, which name do you want (for example yourname.com or yourname.dev)?
 - [x] 2 or 3 websites you like the look of, from the list or elsewhere, and anything you dislike. Answered: out of five design directions, you chose Keynote (5 Nov).
 - [x] Colour or brand preferences: a personal logo, colours, light or dark look? Answered: the Keynote palette (navy with a blue accent), a light/dark toggle, header.jpg as the hero background, and a circular headshot with a vignette. No personal logo.
-- [ ] Contact: show your email, a contact form, or both?
-- [ ] Hosting: Azure Static Web Apps or Cloudflare Pages? If your domain is already on Cloudflare, that tips it to Cloudflare.
+- [x] Contact: show your email, a contact form, or both? Answered: neither. The LinkedIn link is the contact channel.
+- [x] Hosting: Azure Static Web Apps or Cloudflare Pages? If your domain is already on Cloudflare, that tips it to Cloudflare. Answered: Cloudflare Pages for now.
 - [x] Do you have a GitHub account I should create the site repo under, so you own it? Answered: private repo github.com/markosaric/personalweb (5 Nov).

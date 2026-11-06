@@ -1,22 +1,27 @@
 ---
 interface Props {
   showArticles: boolean;
+  /** Prefix for the section links: '' on the homepage, '/' on other pages. */
+  base?: string;
 }
 
-const { showArticles } = Astro.props;
+const { showArticles, base = '' } = Astro.props;
 const links = [
-  { href: '#talks', label: 'Speaking' },
-  { href: '#about', label: 'About' },
-  { href: '#certs', label: 'Certifications' },
-  ...(showArticles ? [{ href: '#articles', label: 'Articles' }] : []),
+  { href: `${base}#talks`, label: 'Speaking' },
+  { href: `${base}#about`, label: 'About' },
+  { href: `${base}#certs`, label: 'Certifications' },
+  ...(showArticles ? [{ href: `${base}#articles`, label: 'Articles' }] : []),
   { href: '#contact', label: 'Contact' },
 ];
 ---
 
-<header class="site-header container">
-  <a href="#top" class="brand">marko<span>.</span>saric</a>
+<header class="topbar">
+  <div class="site-header container">
+  <a href={`${base}#top`} class="brand">marko<span>.</span>saric</a>
+  <div class="actions">
   <nav aria-label="Main">
     {links.map((l) => <a href={l.href}>{l.label}</a>)}
+  </nav>
     <button type="button" class="theme-toggle" aria-label="Switch to dark mode" data-theme-toggle>
       <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
@@ -26,12 +31,24 @@ const links = [
         <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
       </svg>
     </button>
-  </nav>
+  </div>
+  </div>
 </header>
 
 <style>
+  /* Stays at the top while scrolling, slightly see-through with a blur. */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bar);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--bar-line);
+  }
+
   .site-header {
-    padding: 24px;
+    padding: 14px 24px;
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
@@ -51,6 +68,12 @@ const links = [
     color: var(--accent);
   }
 
+  .actions {
+    display: flex;
+    gap: 16px 24px;
+    align-items: center;
+  }
+
   nav {
     display: flex;
     flex-wrap: wrap;
@@ -66,6 +89,42 @@ const links = [
 
   nav a:hover {
     color: var(--text);
+  }
+
+  @media (max-width: 640px) {
+    .topbar {
+      background: var(--bar-solid);
+    }
+
+    /* Phones: brand and theme toggle on the first row, links on a second row that scrolls sideways. */
+    .site-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      padding: 8px 16px 0;
+      gap: 0 12px;
+    }
+
+    .actions {
+      display: contents;
+    }
+
+    .theme-toggle {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    nav {
+      grid-column: 1 / -1;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 8px 0 10px;
+      scrollbar-width: none;
+    }
+
+    nav a {
+      flex-shrink: 0;
+    }
   }
 
   .theme-toggle {

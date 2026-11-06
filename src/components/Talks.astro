@@ -1,9 +1,16 @@
 ---
 import ShowMore from './ShowMore.astro';
-import { offers, pastTalks } from '../data/talks';
+import { getTalkOffers, getPastTalks, getUpcomingTalks } from '../data/talks';
 import { profile } from '../data/profile';
 
 const VISIBLE = 5;
+const offers = (await getTalkOffers()).map((o) => o.data);
+const pastTalks = await getPastTalks();
+const [next, ...later] = (await getUpcomingTalks()).map((t) => t.data);
+
+const longDate = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const shortDate = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const place = (t: { event: string; city?: string }) => (t.city ? `${t.event} · ${t.city}` : t.event);
 ---
 
 <section id="talks" class="section band">
@@ -24,7 +31,47 @@ const VISIBLE = 5;
       }
     </div>
 
-    <h3 class="past-title">Past talks</h3>
+    {
+      next && (
+        <>
+          <h3 class="list-title">Upcoming talks</h3>
+          <article class="next">
+            <div class="next-text">
+              <p class="next-when">
+                Next up · <time datetime={next.date.toISOString().slice(0, 10)}>{longDate(next.date)}</time>
+              </p>
+              <h4>{next.title}</h4>
+              <p class="next-where">{place(next)}</p>
+            </div>
+            {next.url && (
+              <a class="button button--primary" href={next.url}>
+                Event page
+              </a>
+            )}
+          </article>
+          {later.length > 0 && (
+            <ul class="past upcoming">
+              {later.map((t) => (
+                <li>
+                  <time class="date" datetime={t.date.toISOString().slice(0, 10)}>
+                    {shortDate(t.date)}
+                  </time>
+                  <span class="title">{t.title}</span>
+                  <span class="event muted">{place(t)}</span>
+                  {t.url && (
+                    <span class="links">
+                      <a href={t.url}>Event page</a>
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )
+    }
+
+    <h3 class="list-title">Past talks</h3>
     <ul id="past-talks" class="past" data-collapsible>
       {
         pastTalks.map((t, i) => (
@@ -87,9 +134,61 @@ const VISIBLE = 5;
     line-height: 1.5;
   }
 
-  .past-title {
+  .list-title {
     margin: 56px 0 16px;
     font-size: 22px;
+  }
+
+  .next {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px 32px;
+    padding: 28px 32px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: var(--feature);
+    color: #f1f5f9;
+  }
+
+  .next-text {
+    flex: 1 1 480px;
+    min-width: 0;
+  }
+
+  .next-when {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #93c5fd;
+  }
+
+  .next h4 {
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.25;
+  }
+
+  .next-where {
+    margin: 0;
+    color: #cbd5e1;
+  }
+
+  .upcoming {
+    margin-top: 8px;
+  }
+
+  .upcoming li:first-child {
+    border-top: none;
+  }
+
+  .date {
+    width: 110px;
+    font-weight: 600;
+    color: var(--link);
   }
 
   .past {

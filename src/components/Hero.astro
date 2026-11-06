@@ -2,8 +2,10 @@
 import { Image } from 'astro:assets';
 import header from '../assets/photos/header.jpg';
 import { profile, yearsInSoftware } from '../data/profile';
-import { sessionsDelivered } from '../data/talks';
+import { getSessionsDelivered } from '../data/talks';
 import { certifications } from '../data/certifications';
+
+const sessionsDelivered = await getSessionsDelivered();
 
 const stats = [
   { value: yearsInSoftware, label: 'years in software' },

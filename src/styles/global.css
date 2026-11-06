@@ -13,6 +13,10 @@
   --vignette: rgba(15, 23, 42, 0.55);
   --scrim: linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.88) 55%, rgba(255, 255, 255, 0.65) 100%);
   --logo-filter: none;
+  --feature: #0f172a;
+  --bar: rgba(255, 255, 255, 0.78);
+  --bar-solid: rgba(255, 255, 255, 0.92);
+  --bar-line: rgba(220, 227, 238, 0.7);
 
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-body: Inter, system-ui, sans-serif;
@@ -33,6 +37,10 @@
     --vignette: rgba(11, 18, 32, 0.85);
     --scrim: linear-gradient(90deg, rgba(11, 18, 32, 0.94) 0%, rgba(11, 18, 32, 0.86) 55%, rgba(11, 18, 32, 0.6) 100%);
     --logo-filter: invert(1) hue-rotate(180deg);
+    --feature: #14213a;
+    --bar: rgba(11, 18, 32, 0.75);
+    --bar-solid: rgba(11, 18, 32, 0.92);
+    --bar-line: rgba(36, 50, 77, 0.7);
     color-scheme: dark;
   }
 }
@@ -49,6 +57,10 @@
   --vignette: rgba(11, 18, 32, 0.85);
   --scrim: linear-gradient(90deg, rgba(11, 18, 32, 0.94) 0%, rgba(11, 18, 32, 0.86) 55%, rgba(11, 18, 32, 0.6) 100%);
   --logo-filter: invert(1) hue-rotate(180deg);
+  --feature: #14213a;
+  --bar: rgba(11, 18, 32, 0.75);
+  --bar-solid: rgba(11, 18, 32, 0.92);
+  --bar-line: rgba(36, 50, 77, 0.7);
   color-scheme: dark;
 }
 
@@ -60,6 +72,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keeps anchored sections clear of the sticky top bar. */
+  scroll-padding-top: 72px;
 }
 
 @media (prefers-reduced-motion: reduce) {
