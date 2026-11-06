@@ -3,4 +3,5 @@ dist/
 .astro/
 .env
 .env.*
+.wrangler/
 .DS_Store
