@@ -22,7 +22,7 @@ const links = [
   <nav aria-label="Main">
     {links.map((l) => <a href={l.href}>{l.label}</a>)}
   </nav>
-    <button type="button" class="theme-toggle" aria-label="Switch to dark mode" data-theme-toggle>
+    <button type="button" class="theme-toggle" aria-label="Switch to light mode" data-theme-toggle>
       <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
       </svg>
@@ -152,31 +152,22 @@ const links = [
   :global(:root[data-theme='dark']) .icon-moon {
     display: none;
   }
-
-  @media (prefers-color-scheme: dark) {
-    :global(:root:not([data-theme='light'])) .icon-sun {
-      display: block;
-    }
-
-    :global(:root:not([data-theme='light'])) .icon-moon {
-      display: none;
-    }
-  }
 </style>
 
 <script>
   const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
   const root = document.documentElement;
-  const media = window.matchMedia('(prefers-color-scheme: dark)');
+  const themeColor = document.querySelector('meta[name="theme-color"]');
 
-  const isDark = () => (root.dataset.theme ? root.dataset.theme === 'dark' : media.matches);
+  // Dark is the default; only an explicit light choice turns it off.
+  const isDark = () => root.dataset.theme !== 'light';
   const label = () => button?.setAttribute('aria-label', isDark() ? 'Switch to light mode' : 'Switch to dark mode');
 
   label();
-  media.addEventListener('change', label);
   button?.addEventListener('click', () => {
     const next = isDark() ? 'light' : 'dark';
     root.dataset.theme = next;
+    themeColor?.setAttribute('content', next === 'dark' ? '#0b1220' : '#ffffff');
     try {
       localStorage.setItem('theme', next);
     } catch {

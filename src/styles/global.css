@@ -1,5 +1,6 @@
-/* Keynote design tokens. Light is the base; dark applies from the system
-   setting until the visitor picks a theme with the toggle. */
+/* Keynote design tokens. Light tokens are the base; the page is served with
+   data-theme="dark", so dark is the default until the visitor picks light
+   with the toggle. */
 :root {
   --accent: #2f6feb;
   --link: #2f6feb;
@@ -22,27 +23,6 @@
   --font-body: Inter, system-ui, sans-serif;
   --max: 1160px;
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --link: #60a5fa;
-    --link-hover: #93c5fd;
-    --bg: #0b1220;
-    --band: #0f1a2e;
-    --card: #14213a;
-    --text: #f1f5f9;
-    --muted: #a3b1c6;
-    --line: #24324d;
-    --vignette: rgba(11, 18, 32, 0.85);
-    --scrim: linear-gradient(90deg, rgba(11, 18, 32, 0.94) 0%, rgba(11, 18, 32, 0.86) 55%, rgba(11, 18, 32, 0.6) 100%);
-    --logo-filter: invert(1) hue-rotate(180deg);
-    --feature: #14213a;
-    --bar: rgba(11, 18, 32, 0.75);
-    --bar-solid: rgba(11, 18, 32, 0.92);
-    --bar-line: rgba(36, 50, 77, 0.7);
-    color-scheme: dark;
-  }
 }
 
 :root[data-theme='dark'] {
