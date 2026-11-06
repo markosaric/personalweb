@@ -74,7 +74,7 @@ In the repo on GitHub, open **Settings → Secrets and variables → Actions →
 
 ## Step 5: Add the workflow
 
-Create `.github/workflows/deploy.yml` with the content below, commit it on a branch and open a pull request. The PR itself is the first test: you should see the **Build** check pass and a preview link appear.
+The workflow is already in the repo at [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml); it is copied below for reference. Do steps 1 to 4 before it first runs, because the **Deploy** job fails without the Pages project and the two secrets (the **Build** job works either way). Then push any commit to a pull request: you should see the **Build** check pass and a preview link appear.
 
 ```yaml
 name: Build and deploy
@@ -149,7 +149,7 @@ What the pieces do:
 - **`environment`** makes the deploy show up under **Deployments** on the repo page and puts a "View deployment" button on the PR.
 - **`gitHubToken`** lets the Cloudflare action link the deployment back to GitHub.
 
-When the PR's checks are green and the preview looks right, merge it. The merge triggers the first production deploy. Check the **Actions** tab, then open `https://personalweb.pages.dev`.
+When the PR's checks are green and the preview looks right, merge it. Every merge or push to `main` is a production deploy. Check the **Actions** tab, then open `https://personalweb.pages.dev`.
 
 ### Make the build check required (optional, recommended)
 
