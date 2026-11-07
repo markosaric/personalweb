@@ -41,7 +41,7 @@ export async function getPastTalks(): Promise<PastTalk[]> {
     .map(({ data }) => ({ title: data.title, event: data.event, year: data.date.getUTCFullYear(), sessions: 1 }));
 
   const past = (await getCollection('pastTalks'))
-    .sort((a, b) => b.data.year - a.data.year || b.data.order - a.data.order || a.id.localeCompare(b.id))
+    .sort((a, b) => b.data.year - a.data.year || a.data.order - b.data.order || a.id.localeCompare(b.id))
     .map(({ data }) => ({ title: data.title, event: data.event, year: data.year, sessions: data.sessions, slides: data.slides, video: data.video }));
 
   // Passed upcoming talks are the most recent of their year.
