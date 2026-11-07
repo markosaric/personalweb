@@ -30,7 +30,7 @@ const talkOffers = defineCollection({
   }),
 });
 
-// Talks already given. Sorted newest year first; within a year, higher `order`
+// Talks already given. Sorted newest year first; within a year, lower `order`
 // comes first. Files are named <year>-<event>.md.
 const pastTalks = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/talks/past' }),

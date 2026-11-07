@@ -69,7 +69,7 @@ video: https://...    # optional
 ---
 ```
 
-Talks sort by `year`, newest first. When a year has several talks, add `order` (higher shows first). An entry that covers several events sets `sessions` so the hero count stays right.
+Talks sort by `year`, newest first. When a year has several talks, add `order` (lower shows first). An entry that covers several events sets `sessions` so the hero count stays right.
 
 ### Adding an upcoming talk
 
