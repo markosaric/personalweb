@@ -105,8 +105,6 @@ For other problems, something simpler often fits better:
 | Metadata plus large content | SQL or Cosmos DB for queries, Blob for content |
 | Audit logs and analytics over files | ADLS Gen2 + Azure Data Explorer |
 
-JSON is a format, not an architectural requirement.
-
 ### Five questions before production
 
 1. Do we need the distribution and scaling we are paying for?
@@ -119,4 +117,4 @@ JSON is a format, not an architectural requirement.
 
 Don't optimize only the RUs. Optimize the decision. Measure the business operation first, then choose the data and capacity model, and only then look at how much you saved.
 
-Global distribution is a business capability you have to justify, not a checkbox you turn on because it exists. Good architecture knows why it uses this particular database.
+Global distribution is a business capability you have to justify, not a checkbox you turn on because it exists. JSON is a format, not an architectural requirement. Good architecture knows why it uses this particular database.
