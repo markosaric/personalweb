@@ -86,14 +86,14 @@ The goal is not just a cheaper database. I want to know what showing an order co
 
 ## When does Cosmos DB make sense?
 
-The value of a distributed database must be greater than its total cost. Cosmos DB is a good **candidate** when you have:
+The value of a distributed database must be greater than its total cost. Cosmos DB is a good **candidate** (candidates, not automatic recommendations) when you have:
 
 - global operational data where local access has measurable value,
 - many reads and writes that spread well across a partition key,
 - a document model with known, dominant access patterns,
 - scaling and replication that business goals actually justify.
 
-Examples: global user profiles, session or game state, device state, global order status. Candidates, not automatic recommendations.
+Examples: global user profiles, session or game state, device state, global order status.
 
 For other problems, something simpler often fits better:
 
