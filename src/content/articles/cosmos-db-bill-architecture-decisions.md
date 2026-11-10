@@ -5,7 +5,7 @@ tag: Azure
 date: 2026-11-10
 ---
 
-In October, at the NetWork conference, I talked about how business and architecture decisions can shape the financial picture of a Cosmos DB bill. This article is a short version of that talk. It covers four ideas that came up most often in the questions afterwards.
+In October, at the NetWork conference, I talked about how business and architecture decisions can shape the financial picture of a Cosmos DB bill. This article is a short version of that talk. It focuses on four areas that, in practice, generate most of the cost.
 
 ## 1. Documents and indexes have a price
 
