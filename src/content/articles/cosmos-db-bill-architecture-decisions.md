@@ -5,7 +5,7 @@ tag: Azure
 date: 2026-11-10
 ---
 
-In October, at the NetWork conference, I talked about how business and architecture decisions can shape the financial picture of a Cosmos DB bill. This article is a short version of that talk. It focuses on four areas that, in practice, generate most of the cost.
+In October, at the NetWork conference, I talked about how business and architecture decisions can shape the financial picture of a Cosmos DB bill. This article is a short version of that talk. It focuses on two areas that, in practice, generate most of the cost. After that, I look at how to keep cost under control in production and when Cosmos DB is the right choice at all.
 
 ## 1. Documents and indexes have a price
 
@@ -67,7 +67,7 @@ The partition key does not change the price per RU. It changes two different cos
 
 One catch: with manual throughput, **fewer RUs used does not mean a smaller bill**. The saving only shows up when you measure the workload again and lower the provisioned RU/s, while keeping room for peaks and your latency targets.
 
-## 3. Cost control is part of production architecture
+## Cost control is part of production architecture
 
 Cost control does not start when the invoice arrives. It belongs in how you monitor production, next to latency and errors. The loop is simple: **measure, explain, optimize, resize**.
 
@@ -84,7 +84,7 @@ Also remember that an [Azure budget](https://learn.microsoft.com/azure/cost-mana
 
 The goal is not just a cheaper database. I want to know what showing an order costs, not only what the database costs.
 
-## 4. When does Cosmos DB make sense?
+## When does Cosmos DB make sense?
 
 The value of a distributed database must be greater than its total cost. Cosmos DB is a good **candidate** when you have:
 
