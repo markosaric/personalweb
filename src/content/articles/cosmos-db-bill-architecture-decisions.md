@@ -117,4 +117,4 @@ For other problems, something simpler often fits better:
 
 Don't optimize only the RUs. Optimize the decision. Measure the business operation first, then choose the data and capacity model, and only then look at how much you saved.
 
-Global distribution is a business capability you have to justify, not a checkbox you turn on because it exists. JSON is a format, not an architectural requirement. Good architecture knows why it uses this particular database.
+Global distribution is a business capability you have to justify, not a checkbox you turn on because it exists. And remember, JSON is a format, not an architectural requirement. Good architecture knows why it uses this particular database.
