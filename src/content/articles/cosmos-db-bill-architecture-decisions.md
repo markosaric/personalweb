@@ -58,7 +58,7 @@ Autoscale does not remove this problem: a single logical partition is still limi
 
 ### The partition key is a financial decision
 
-A key with few values, like `/status`, concentrates traffic and creates hot partitions. A key like `/tenantId` can be a better start if most queries and traffic naturally belong to one tenant, but watch your largest tenant as it grows. ([Partitioning](https://learn.microsoft.com/azure/cosmos-db/partitioning))
+A key with few values, like `/lowCardinalityKey`, concentrates traffic and creates hot partitions. A key like `/highCardinalityKey` can be a better start if most queries and traffic naturally group by it, but watch its largest value as it grows. ([Partitioning](https://learn.microsoft.com/azure/cosmos-db/partitioning))
 
 The partition key does not change the price per RU. It changes two different costs:
 
