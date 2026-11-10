@@ -1,7 +1,7 @@
 ---
 title: "How architecture decisions shape your Cosmos DB bill"
 summary: "What really drives Cosmos DB cost, why you can get 429s on a quiet database, and when Cosmos DB is the right choice at all."
-tag: Azure
+tag: "Azure · Data"
 date: 2026-10-25
 ---
 
