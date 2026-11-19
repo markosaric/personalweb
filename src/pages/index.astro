@@ -21,9 +21,10 @@ const showArticles = latestArticles.length > 0;
   <main>
     <Hero />
     <Talks />
-    <About />
-    <Certifications />
     {showArticles && <Articles articles={latestArticles} />}
+    {/* Sections alternate plain and tinted backgrounds; Talks is tinted. */}
+    <About band={showArticles} />
+    <Certifications band={!showArticles} />
   </main>
   <Contact />
 </Base>

@@ -8,9 +8,9 @@ interface Props {
 const { showArticles, base = '' } = Astro.props;
 const links = [
   { href: `${base}#talks`, label: 'Speaking' },
+  ...(showArticles ? [{ href: `${base}#articles`, label: 'Articles' }] : []),
   { href: `${base}#about`, label: 'About' },
   { href: `${base}#certs`, label: 'Certifications' },
-  ...(showArticles ? [{ href: `${base}#articles`, label: 'Articles' }] : []),
   { href: '#contact', label: 'Contact' },
 ];
 ---

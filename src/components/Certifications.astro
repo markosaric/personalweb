@@ -5,9 +5,16 @@ import { certifications } from '../data/certifications';
 import { profile } from '../data/profile';
 
 const VISIBLE = 5;
+
+interface Props {
+  /** Tinted background, so sections alternate. */
+  band?: boolean;
+}
+
+const { band = false } = Astro.props;
 ---
 
-<section id="certs" class="section band">
+<section id="certs" class:list={['section', { band }]}>
   <div class="container">
     <h2 class="section-title">Certifications</h2>
     <ul id="cert-list" class="certs" data-collapsible>

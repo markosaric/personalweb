@@ -4,9 +4,16 @@ import headshot from '../assets/photos/headshot.jpg';
 import mcp from '../assets/certifications/microsoft-certified-professional.png';
 import { profile } from '../data/profile';
 import { jobs } from '../data/jobs';
+
+interface Props {
+  /** Tinted background, so sections alternate. */
+  band?: boolean;
+}
+
+const { band = false } = Astro.props;
 ---
 
-<section id="about" class="section">
+<section id="about" class:list={['section', { band }]}>
   <div class="container about">
     <div class="photo-wrap">
       <div class="photo">
